@@ -16,8 +16,37 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
+	// Log4j to SLF4J bridge
+	implementation 'org.slf4j:log4j-over-slf4j:2.0.5'
+	// exclude original Log4j
+	configurations {
+		all {
+			exclude group: 'log4j', module: 'log4j'
+		}
+	}
+
+	// Java Util Logging to SLF4J bridge
+	implementation 'org.slf4j:jul-to-slf4j:2.0.5'
+
+	// Apache Commons Logging to SLF4J bridge
+	implementation 'org.slf4j:jcl-over-slf4j:2.0.5'
+	// exclude original Apache Commons Logging
+	configurations {
+		all {
+			exclude group: 'commons-logging', module: 'commons-logging'
+		}
+	}
+
+	implementation 'org.java-websocket:Java-WebSocket:1.5.3'
+
+
+	implementation files('libs/nri_speech_to_text_lib-0.0.6.jar')
+	implementation files('libs/nri_text_to_speech_lib-0.0.1.jar')
+	implementation files('libs/nri_text_translation_lib-0.0.1.jar')
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
+
 
 tasks.named('test') {
 	useJUnitPlatform()
