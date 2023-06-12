@@ -108,7 +108,7 @@ min-height: 100vh;
     box-shadow: inset 0px 0px 13px 1px rgba(0, 0, 0, 0.1);
   }
 
-  .rounded-camera-button {
+  .rounded-camera-button-on {
     width: 3vw;
     height: 6vh;
     background: white;
@@ -123,10 +123,40 @@ min-height: 100vh;
     transition: background 0.2s;
   }
 
-  .rounded-mic-button {
+  .rounded-camera-button-off {
+    width: 3vw;
+    height: 6vh;
+    background: red;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .rounded-mic-button-on {
     width: 3vw;
     height: 6vh;
     background: blue;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .rounded-mic-button-off {
+    width: 3vw;
+    height: 6vh;
+    background: red;
     color: white;
     display: inline-flex;
     align-items: center;
@@ -153,8 +183,10 @@ min-height: 100vh;
     transition: background 0.2s;
   }
 
-  .rounded-camera-button:hover,
-  .rounded-mic-button:hover {
+  .rounded-camera-button-on:hover,
+  .rounded-mic-button-on:hover,
+  .rounded-camera-button-off:hover,
+  .rounded-mic-button-off:hover {
     box-shadow: inset 0px 0px 10px 8px rgba(0, 0, 0, 0.1)    
   }
 
