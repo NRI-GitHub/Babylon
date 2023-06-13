@@ -1,43 +1,94 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Babylon Meet</title>
-  <link rel="stylesheet" href="../static/css/main.css">
-</head>
-<body>
-  <div class="container">
-    <div class="second-background">
+  <head>
+    <title>Babylon Meet</title>
+    <link rel="stylesheet" href="../static/css/main.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="second-background">
         <div style="border-bottom-style: inset;
         display: flex;
         align-items: center;">
-        <img src="../static/images/icons8-camera-64.png" style="padding: 31px;">
-        <h1 style="font-size: large;
-        font-family: sans-serif;">Status Update Meeting | Réunion pour faire le point</h1>
+          <img src="../static/images/icons8-camera-64.png"
+            class="topCameraIcon" draggable="false">
+          <h1 style="font-size: large;
+            font-family: sans-serif;">Status Update Meeting | Réunion pour faire le
+            point</h1>
         </div>
         <div class="contain" style="padding-top: 4vh;
-        padding-left: 2vw;">
-        <img src="../static/images/stock image.webp" alt="FaceTime background image" class="background-image">
-        <div class="call-bar">
-          <button id="cameraButton" class="rounded-camera-button-on" type="button" onclick="changeCameraColor()">
-            <ion-icon name="videocam" size="large"></ion-icon>
-          </button>
-          <button id="micButton" class="rounded-mic-button-on" type="button" onclick="changeMicColor()">
-            <ion-icon name="mic" size="large"></ion-icon>
-          </button>
-          <button id="endCallButton" class="rounded-phone-button" type="button" onclick="endCall()">
-            <ion-icon name="call" size="large"></ion-icon>
-          </button>
+        padding-left: 2vw; gap: 20px;">
+          <img src="../static/images/stock image.webp"
+            alt="FaceTime background image" class="background-image" draggable="false">
+          <div class="call-bar">
+            <button title="Settings" class="rounded-settings-button">
+              <ion-icon name="ellipsis-vertical" size="large"></ion-icon>
+            </button>
+            <button title="Turn Camera Off" id="cameraButton" class="rounded-camera-button-on" type="button" onclick="toggleCamera()">
+              <ion-icon name="videocam" size="large"></ion-icon>
+            </button>
+            <button title="Turn Microphone Off" id="micButton" class="rounded-mic-button-on" type="button"
+              onclick="toggleMic()">
+              <ion-icon name="mic" size="large"></ion-icon>
+            </button>
+            <button title="End Call" id="endCallButton" class="rounded-phone-button"
+              type="button" onclick="endCall()">
+              <ion-icon name="call" size="large"></ion-icon>
+            </button>
+            <!-- <button title="Toggle Messages" class="rounded-camera-button-on">
+              <ion-icon name="chatbox" size="large"></ion-icon>
+            </button> -->
+          </div>
+          <img src="../static/images/stock image 2.webp"
+            alt="FaceTime call image" class="call-image" draggable="false">
+            <div>
+              <h2 style="display: flex;
+              font-family: sans-serif;
+              padding-top: 2vh;
+              padding: 15px;
+              border-bottom: inset;
+              justify-content: center;">Audio Logs</h2>
+              <div class="form-box">
+                <div class="button-box">
+                  <div id="btn"></div>
+                  <button title="Translated Audio Logs" type="button" class="toggle-btn" onclick="leftClick()">Translated</button>
+                  <button title="Native Audio Logs" type="button" class="toggle-btn" onclick="rightClick()">Native</button>
+                </div>
+              </div>
+            <div class="audio-log">
+              <!-- Log Entry 1 -->
+              <div class="log-entry">
+                <img src="../static/images/stock image.webp" alt="Person 1" class="person-picture">
+                <div class="log-content">
+                  <p>Good morning Tyler! Let's dive into the data.</p>
+                </div>
+              </div>
+          
+              <!-- Log Entry 2 -->
+              <div class="log-entry">
+                <img src="../static/images/stock image 2.webp" alt="Person 2" class="person-picture">
+                <div class="log-content">
+                  <p>Good morning! I'm excited to discuss the latest trends and insights. Can we start with the sales figures?</p>
+                </div>
+              </div>
+          
+              <!-- Log Entry 3 -->
+              <div class="log-entry">
+                <img src="../static/images/stock image.webp" alt="Person 3" class="person-picture">
+                <div class="log-content">
+                  <p>Absolutely! Our sales have been steadily increasing over the past quarter. We've seen a 10% growth compared to the same period last year.</p>
+                </div>
+              </div>
+          
+              <!-- Add more log entries as needed -->
+            </div>
+            </div>
         </div>
-        <img src="../static/images/stock image 2.webp" alt="FaceTime call image" class="call-image">
-        <div>
-          <h1>Audio Logs will be here</h1>
-        </div>
-      </div>
 
-  </div>
-  </div>
-<script src="../static/js/main.js"></script>
-<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-</body>
+      </div>
+    </div>
+    <script src="../static/js/main.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+  </body>
 </html>

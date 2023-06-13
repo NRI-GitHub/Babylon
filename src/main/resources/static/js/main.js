@@ -1,45 +1,47 @@
-function changeCameraColor() {
+function toggleCamera() {
     var button = document.getElementById("cameraButton");
-    
+    var cameraIcon = button.querySelector("ion-icon");
+  
     if (button.classList.contains("rounded-camera-button-on")) {
       button.classList.remove("rounded-camera-button-on");
       button.classList.add("rounded-camera-button-off");
+      cameraIcon.setAttribute("name", "videocam-off");
+      button.setAttribute("title", "Turn Camera On");
     } else if (button.classList.contains("rounded-camera-button-off")) {
-        button.classList.remove("rounded-camera-button-off");
-        button.classList.add("rounded-camera-button-on");
-    }
-
-    var cameraButton = document.getElementById("cameraButton");
-    var cameraIcon = cameraButton.querySelector("ion-icon");
-
-    if (cameraIcon.getAttribute("name") === "videocam") {
-        cameraIcon.setAttribute("name", "videocam-off");
-    } else {
-        cameraIcon.setAttribute("name", "videocam");
+      button.classList.remove("rounded-camera-button-off");
+      button.classList.add("rounded-camera-button-on");
+      cameraIcon.setAttribute("name", "videocam");
+      button.setAttribute("title", "Turn Camera Off");
     }
   }
-
-  function changeMicColor() {
+  
+  function toggleMic() {
     var button = document.getElementById("micButton");
-    
+    var micIcon = button.querySelector("ion-icon");
+  
     if (button.classList.contains("rounded-mic-button-on")) {
       button.classList.remove("rounded-mic-button-on");
       button.classList.add("rounded-mic-button-off");
+      micIcon.setAttribute("name", "mic-off");
+      button.setAttribute("title", "Turn Microphone On");
     } else if (button.classList.contains("rounded-mic-button-off")) {
-        button.classList.remove("rounded-mic-button-off");
-        button.classList.add("rounded-mic-button-on");
-    }
-
-    var micButton = document.getElementById("micButton");
-    var micIcon = micButton.querySelector("ion-icon");
-
-    if (micIcon.getAttribute("name") === "mic") {
-        micIcon.setAttribute("name", "mic-off");
-    } else {
-        micIcon.setAttribute("name", "mic");
+      button.classList.remove("rounded-mic-button-off");
+      button.classList.add("rounded-mic-button-on");
+      micIcon.setAttribute("name", "mic");
+      button.setAttribute("title", "Turn Microphone Off");
     }
   }
 
   function endCall() {
     alert("Call Ended!");
+  }
+
+  function leftClick() {
+    var btn = document.getElementById("btn");
+    btn.style.transform = "translateX(0)";
+  }
+  
+  function rightClick() {
+    var btn = document.getElementById("btn");
+    btn.style.transform = "translateX(110px)";
   }

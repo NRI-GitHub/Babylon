@@ -61,6 +61,10 @@ min-height: 100vh;
     display: flex;
     border-radius: 12px;
     flex-direction: column;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
   }
   
   .call-image {
@@ -71,6 +75,10 @@ min-height: 100vh;
     box-shadow: rgba(0, 0, 0, 0.1) -9px 9px 11px 5px;
     width: 19vw;
     border-radius: 12px;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
   }
   
   .call-bar {
@@ -111,8 +119,8 @@ min-height: 100vh;
   .rounded-camera-button-on {
     width: 3vw;
     height: 6vh;
-    background: white;
-    color: black;
+    background: #06060654;
+    color: white;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -141,7 +149,7 @@ min-height: 100vh;
   .rounded-mic-button-on {
     width: 3vw;
     height: 6vh;
-    background: blue;
+    background: #06060654;
     color: white;
     display: inline-flex;
     align-items: center;
@@ -183,14 +191,134 @@ min-height: 100vh;
     transition: background 0.2s;
   }
 
+  .rounded-settings-button {
+    width: 3vw;
+    height: 6vh;
+    background: #06060654;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
   .rounded-camera-button-on:hover,
   .rounded-mic-button-on:hover,
   .rounded-camera-button-off:hover,
   .rounded-mic-button-off:hover {
     box-shadow: inset 0px 0px 10px 8px rgba(0, 0, 0, 0.1)    
   }
+  
+  .topCameraIcon {
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    padding: 31px;
+  }
 
-  .rounded-phone-buttton:hover {
-    background: db0000;
+  #chat-box {
+     width: 26vw;
+    height: 65vh;
+    border: 1px solid #ccc;
+    overflow: hidden;
+  }
+  
+  #chat-messages {
+    height: 80%;
+    padding: 10px;
+    overflow-y: auto;
+  }
+  
+  #chat-input {
+    height: 20%;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+  }
+  
+  #message-input {
+    flex: 1;
+    padding: 5px;
+  }
+  
+  #send-button {
+    margin-left: 10px;
+  }
+
+  .audio-log {
+    margin-top: 20px;
+  }
+
+  .log-entry {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    
+  }
+
+  .person-picture {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+
+  .log-content {
+    flex-grow: 1;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    max-width: 400px;
+  }
+
+  .toggle-switch {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 40px;
+    background-color: #ccc;
+    border-radius: 20px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .button-box {
+    width: 220px;
+    margin: 35px auto;
+    position: relative;
+    display: flex;
+    border-radius: 30px;
+    background: #fff;
+  }
+  
+  .toggle-btn {
+    padding: 15px 13px;
+    cursor: pointer;
+    background: transparent;
+    border: 0;
+    outline: none;
+    width: 112px;
+    position: relative;
+    text-align: center;
+    color: #000;
+  }
+
+  
+  #btn {
+    left: 0;
+    top: 0;
+    position: absolute;
+    width: 110px;
+    height: 100%;
+    background: #006eff;
+    border-radius: 30px;
+    transition: .5s;
+    background: #006eff;
+    transition: .5s;
   }
   
