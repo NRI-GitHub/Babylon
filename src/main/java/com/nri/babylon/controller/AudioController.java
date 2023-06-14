@@ -24,13 +24,10 @@ import java.net.SocketException;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.UUID;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingDeque;
 
 @RestController()
 public class AudioController {
-    private LinkedBlockingDeque<String> fileQueue = new LinkedBlockingDeque<>();
+    //private LinkedBlockingDeque<String> audioFilesQueue = new LinkedBlockingDeque<>();
 
     @Autowired
     private NRISpeechToText nriSpeechToText;
@@ -45,26 +42,6 @@ public class AudioController {
     private static final String UPLOADED_FOLDER = "./audio/uploaded_audio/";
     private static final String CONVERTED_FOLDER = "./audio/converted_audio/";
     private static final int AUDIO_SEGMENT_TIME_MS = 5000;
-    private static long lastFileCreationTime = 0;
-    private final ExecutorService executorService = Executors.newFixedThreadPool(10);
-
-    public AudioController() {
-        new Thread(() -> {
-            while (true) {
-                try {
-                    String filePath = fileQueue.take();
-
-                    String fileWithExtension = new File(filePath).getName();
-                    String fileName = fileWithExtension.replace(".webm", "");
-                    System.out.println("Convert name: " + fileName);
-                    String finalFile = convertToMp3(filePath, fileName);
-                    processMp3(finalFile);
-                } catch (InterruptedException | EncoderException | IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
-    }
 
     @GetMapping("/sendAudio")
     public ResponseEntity<InputStreamResource> getAudio() {
@@ -109,6 +86,7 @@ public class AudioController {
             String finalFile = convertToMp3(String.valueOf(file), String.valueOf(fileName));
             processMp3(finalFile);
 
+
         } catch (SocketException e) {
             // Handle connection reset
             System.err.println("Client aborted the connection: " + e.getMessage());
@@ -121,55 +99,6 @@ public class AudioController {
         return new ResponseEntity<>("Audio saved successfully!", HttpStatus.OK);
     }
 
-    /*@PostMapping("/acceptAudio")
-    public ResponseEntity<String> upload(HttpServletRequest request) {
-        System.out.println("[Controller::acceptAudio] Received Media");
-
-        FileOutputStream fileOutputStream = null;
-        String filePath = null;
-        long lastFileCreationTime = 0; // Initialize here instead of using a static variable
-
-        try {
-            InputStream inputStream = request.getInputStream();
-            byte[] buffer = new byte[1024];
-            int bytesRead;
-
-            while ((bytesRead = inputStream.read(buffer)) != -1) {
-                long currentTime = System.currentTimeMillis();
-                if (currentTime - lastFileCreationTime >= 5000 || fileOutputStream == null) {
-                    lastFileCreationTime = currentTime;
-
-                    if (fileOutputStream != null) {
-                        fileOutputStream.close();
-                        fileQueue.put(filePath); // Put file into queue for processing
-                        System.out.println("[Controller::acceptAudio] Finishing file." + filePath);
-                    }
-
-                    String timestamp = String.valueOf(lastFileCreationTime);
-                    filePath = UPLOADED_FOLDER + "_" + timestamp + ".webm";
-                    fileOutputStream = new FileOutputStream(filePath);
-                    System.out.println("[Controller::acceptAudio] Creating new file " + filePath);
-                }
-
-                fileOutputStream.write(buffer, 0, bytesRead);
-            }
-
-            if (fileOutputStream != null) {
-                fileOutputStream.close();
-                fileQueue.put(filePath); // Put the last file into queue for processing
-            }
-
-        } catch (SocketException e) {
-            System.err.println("Client aborted the connection: " + e.getMessage());
-            return new ResponseEntity<>("Client aborted the connection", HttpStatus.PARTIAL_CONTENT);
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-            return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        System.out.println("[Controller::acceptAudio] Done Receiving audio");
-        return new ResponseEntity<>("Audio saved successfully!", HttpStatus.OK);
-    }*/
-
     private void processMp3(String finalFile) throws IOException, InterruptedException {
         nriSpeechToText.setOnSpeechToTextListener(new OnSpeechToTextListener() {
             public void onIncomingPartialTranscript(String partialTranscription) {
@@ -180,6 +109,7 @@ public class AudioController {
             }
         });
         File wavFile = new File(finalFile);
+        //File wavFile = new File(CONVERTED_FOLDER + "d49f7162-c1b9-48a4-b1b6-4d8eddbe0f02.wav");
 
         int chunkSize = 44100;
         byte[] audioData = Files.readAllBytes(wavFile.toPath());
