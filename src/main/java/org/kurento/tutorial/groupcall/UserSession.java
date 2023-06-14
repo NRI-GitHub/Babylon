@@ -19,15 +19,11 @@ package org.kurento.tutorial.groupcall;
 
 import java.io.Closeable;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import org.kurento.client.Continuation;
-import org.kurento.client.EventListener;
-import org.kurento.client.IceCandidate;
-import org.kurento.client.IceCandidateFoundEvent;
-import org.kurento.client.MediaPipeline;
-import org.kurento.client.WebRtcEndpoint;
+import org.kurento.client.*;
 import org.kurento.jsonrpc.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +49,7 @@ public class UserSession implements Closeable {
   private final String roomName;
   private final WebRtcEndpoint outgoingMedia;
   private final ConcurrentMap<String, WebRtcEndpoint> incomingMedia = new ConcurrentHashMap<>();
+  private final RecorderEndpoint recordMyAudio;
 
   public UserSession(final String name, String roomName, final WebSocketSession session,
       MediaPipeline pipeline) {
@@ -62,6 +59,15 @@ public class UserSession implements Closeable {
     this.session = session;
     this.roomName = roomName;
     this.outgoingMedia = new WebRtcEndpoint.Builder(pipeline).build();
+
+    //Connect to our recording endpoint
+    RecorderEndpoint recordMyAudio = new RecorderEndpoint
+            .Builder(pipeline, "http://192.168.1.94:8080/acceptAudio/"+roomName+"/"+ name)
+            .withMediaProfile(MediaProfileSpecType.WEBM_AUDIO_ONLY).build();
+
+    outgoingMedia.connect(recordMyAudio, MediaType.AUDIO);
+    recordMyAudio.record();
+    this.recordMyAudio = recordMyAudio;
 
     this.outgoingMedia.addIceCandidateFoundListener(new EventListener<IceCandidateFoundEvent>() {
 
@@ -239,6 +245,10 @@ public class UserSession implements Closeable {
         webRtc.addIceCandidate(candidate);
       }
     }
+  }
+
+  public RecorderEndpoint getRecordMyAudio() {
+    return recordMyAudio;
   }
 
   /*

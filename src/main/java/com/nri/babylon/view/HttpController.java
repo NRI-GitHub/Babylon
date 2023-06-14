@@ -1,4 +1,4 @@
-package com.nri.babylon;
+package com.nri.babylon.view;
 
 import com.nri.babylon.testing.TestLibs;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +16,20 @@ public class HttpController {
         return "index";
     }
 
-    @GetMapping("/call")
-    public String getIndex2(){
-        return "index2";
-    }
     @GetMapping("/test-libs")
     public String getTestLibs(){
         testLibs.printTest();
         return "test-lib";
+    }
+
+    @GetMapping("/audioTest")
+    public String index() {
+        return "audioTest";
+    }
+
+
+    @GetMapping("/call")
+    public String getIndex2(){
+        return "index2";
     }
 }
