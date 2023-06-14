@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.nri'
-version = '0.0.2'
+version = '0.0.10'
 sourceCompatibility = '17'
 
 repositories {
@@ -39,6 +39,20 @@ dependencies {
 
 	implementation 'org.java-websocket:Java-WebSocket:1.5.3'
 
+	implementation 'org.springframework:spring-websocket'
+
+	// WebJars
+	implementation 'org.webjars:webjars-locator:0.45'
+	implementation 'org.webjars.bower:jquery:3.6.3'
+	implementation 'org.webjars.bower:bootstrap:5.2.2'
+	implementation 'org.webjars.bower:demo-console:1.5.1'
+	implementation 'org.webjars.bower:ekko-lightbox:5.2.0'
+	implementation 'org.webjars.bower:webrtc-adapter:7.4.0'
+
+
+	// Kurento
+	implementation 'org.kurento:kurento-client:7.0.0'
+	implementation "org.kurento:kurento-utils-js:7.0.0"
 
 	implementation files('libs/nri_speech_to_text_lib-0.0.6.jar')
 	implementation files('libs/nri_text_to_speech_lib-0.0.1.jar')
@@ -50,4 +64,9 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+// Additional BootJar task for packaging into a JAR
+bootJar {
+	mainClass = 'com.nri.babylon.BabylonApplication'
 }

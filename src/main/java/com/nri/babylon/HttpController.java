@@ -15,6 +15,11 @@ public class HttpController {
     public String getIndex(){
         return "index";
     }
+
+    @GetMapping("/call")
+    public String getIndex2(){
+        return "index2";
+    }
     @GetMapping("/test-libs")
     public String getTestLibs(){
         testLibs.printTest();
