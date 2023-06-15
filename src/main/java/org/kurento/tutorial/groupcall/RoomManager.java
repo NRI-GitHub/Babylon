@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import com.nri.babylon.config.ColorGenerator;
 import com.nri.babylon.view.model.AudioLogMessage;
 import org.kurento.client.KurentoClient;
 import org.slf4j.Logger;
@@ -92,11 +93,10 @@ public class RoomManager {
           for (UserSession participant : participants) {
             String name = participant.getName();
             String id = participant.getSession().getId();
+            String userIconColor = participant.getIconColor();
             String fakeMessage = "fake message from : " + name + " : "+fakeCount;
-            if (name.substring(0,2).contains("A")){
-              id = "user1";
-            }
-            AudioLogMessage audioLogMessage = new AudioLogMessage(fakeMessage, id, name);
+
+            AudioLogMessage audioLogMessage = new AudioLogMessage(fakeMessage, id, name, userIconColor);
 
             try {
               room.sendAudioLog(audioLogMessage);

@@ -23,6 +23,11 @@ window.onbeforeunload = function() {
 	ws.close();
 };
 
+ws.onopen = function(event) {
+  console.log('WebSocket is open now.');
+  tryAutoLogin();
+};
+
 ws.onmessage = function(message) {
 	var parsedMessage = JSON.parse(message.data);
 	console.info('Received message: ' + message.data);
@@ -70,8 +75,8 @@ function register() {
     registerMain(name, room, voiceId, languageId);
 }
 
-function registerMain(name, room, voiceId, languageId){
-
+function registerMain(userName, room, voiceId, languageId){
+    user = userName;
 
     // Check if room name is "nri5764a7cc", if not, show an alert dialog
     if (room !== 'nri5764a7cc') {
@@ -160,6 +165,8 @@ function leaveRoom() {
 	document.getElementById('room').style.display = 'none';
 
 	ws.close();
+
+	window.location.href = "/register";
 }
 
 function receiveVideo(sender) {
@@ -192,6 +199,7 @@ function onIncomingAudioLog(parsedMessage) {
   var message = parsedMessage.data.message;
   var userId = parsedMessage.data.userId;
   var userName = parsedMessage.data.userName;
+  var userIconColor = parsedMessage.data.userIconColor;
 
   // Create chat entry elements
   var chatEntry = document.createElement('div');
@@ -199,13 +207,7 @@ function onIncomingAudioLog(parsedMessage) {
   var userImage = document.createElement('div');
   userImage.className = 'person-picture';
   userImage.textContent = userName.charAt(0); // Set the first character of the name as the icon
-
-  // Set background color based on user
-  if (userId === 'user1') {
-    userImage.style.backgroundColor = '#FFA500'; // Set color for user1
-  } else {
-    userImage.style.backgroundColor = '#00BFFF'; // Set color for user2
-  }
+  userImage.style.backgroundColor = userIconColor;
 
   var logContent = document.createElement('div');
   logContent.className = 'log-content';
@@ -225,6 +227,24 @@ function onIncomingAudioLog(parsedMessage) {
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
+function tryAutoLogin(){
+    var nameElement = document.getElementById('myName');
+    var roomElement = document.getElementById('myRoomName');
+    var voiceElement = document.getElementById('myVoice');
+    var languageElement = document.getElementById('myLanguage');
+
+    name = nameElement ? nameElement.value : null;
+    var room = roomElement ? roomElement.value : null;
+    var voiceId = voiceElement ? voiceElement.value : null;
+    var languageId = languageElement ? languageElement.value : null;
+
+    if(name && room && voiceId && languageId) {
+        console.info('auto register YES');
+        registerMain(name, room, voiceId, languageId);
+    } else {
+        console.info('auto register NO');
+    }
+}
 
 function sendMessage(message) {
 	var jsonMessage = JSON.stringify(message);

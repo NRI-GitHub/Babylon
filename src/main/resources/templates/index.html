@@ -1,14 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
   <head>
     <title>Babylon Meet</title>
     <link rel="stylesheet" href="/css/main.css">
+    <input type="hidden" id="myName" th:if="${myName != null}" th:value="${myName}" />
+    <input type="hidden" id="myRoomName" th:if="${myRoomName != null}" th:value="${myRoomName}" />
+    <input type="hidden" id="myVoice" th:if="${myVoice != null}" th:value="${myVoice}" />
+    <input type="hidden" id="myLanguage" th:if="${myLanguage != null}" th:value="${myLanguage}" />
 
     <script src="/webjars/webrtc-adapter/release/adapter.js"></script>
-    <script src="./js/conferenceroom.js"></script>
+    <script src="./js/conference-room.js"></script>
     <script src="./js/participant.js"></script>
     <script src="./js/kurento-utils.js"></script>
-</style>
+
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
   </head>
   <body>
     <div class="container">
@@ -34,7 +41,7 @@
               <ion-icon name="mic" size="large"></ion-icon>
             </button>
             <button title="End Call" id="endCallButton" class="rounded-phone-button"
-              type="button" onclick="endCall()">
+              type="button" onclick="leaveRoom()">
               <ion-icon name="call" size="large"></ion-icon>
             </button>
           </div>
@@ -127,11 +134,5 @@
     <!-- Test do not use me -->
 
     <script src="/js/main.js"></script>
-    <script src="/webjars/webrtc-adapter/release/adapter.js"></script>
-    <script src="./js/conferenceroom.js"></script>
-    <script src="./js/participant.js"></script>
-    <script src="./js/kurento-utils.js"></script>
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   </body>
 </html>

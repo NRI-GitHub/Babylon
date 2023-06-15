@@ -1,12 +1,16 @@
 package com.nri.babylon;
 
 
+import com.nri.babylon.config.ColorGenerator;
+
 public class Util {
     private static Util instance;
     private final String recorderEndpointIpAddress;
+    private final ColorGenerator colorGenerator;
 
-    public Util(String recorderEndpointIpAddress) {
+    public Util(String recorderEndpointIpAddress, ColorGenerator colorGenerator) {
         this.recorderEndpointIpAddress = recorderEndpointIpAddress;
+        this.colorGenerator = colorGenerator;
     }
 
 
@@ -18,7 +22,15 @@ public class Util {
         return instance.getRecorderEndpointIpAddress();
     }
 
+    public static String getUniqueHexColor(String name) {
+        return instance.getColorGenerator().getUniqueHexColor(name);
+    }
+
     private String getRecorderEndpointIpAddress() {
         return recorderEndpointIpAddress;
+    }
+
+    public ColorGenerator getColorGenerator() {
+        return colorGenerator;
     }
 }

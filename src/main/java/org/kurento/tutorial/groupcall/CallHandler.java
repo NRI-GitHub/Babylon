@@ -33,7 +33,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 
 /**
- * 
+ *
  * @author Ivan Gracia (izanmail@gmail.com)
  * @since 4.3.1
  */
@@ -69,7 +69,8 @@ public class CallHandler extends TextWebSocketHandler {
         final String senderName = jsonMessage.get("sender").getAsString();
         final UserSession sender = registry.getByName(senderName);
         final String sdpOffer = jsonMessage.get("sdpOffer").getAsString();
-        user.receiveVideoFrom(sender, sdpOffer);
+        if (sender != null)
+            user.receiveVideoFrom(sender, sdpOffer);
         break;
       case "leaveRoom":
         leaveRoom(user);

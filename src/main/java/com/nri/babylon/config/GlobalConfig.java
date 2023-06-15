@@ -9,6 +9,7 @@ import org.kurento.client.KurentoClient;
 import org.kurento.tutorial.groupcall.CallHandler;
 import org.kurento.tutorial.groupcall.RoomManager;
 import org.kurento.tutorial.groupcall.UserRegistry;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,6 +29,9 @@ public class GlobalConfig {
 
     @Value("${nri.api.recorder_endpoint_ip_address}")
     private String recorderEndpointIpAddress;
+
+    @Autowired
+    private ColorGenerator colorGenerator;
 
     @Bean
     public TestLibs testLibsProvider(){
@@ -69,12 +73,12 @@ public class GlobalConfig {
 
     @Bean
     public KurentoClient kurentoClient() {
-        return KurentoClient.create("ws://localhost:32769/kurento");
+        return KurentoClient.create();
     }
 
     @Bean
     public Util getUtil() {
-        Util util = new Util(recorderEndpointIpAddress);
+        Util util = new Util(recorderEndpointIpAddress, colorGenerator);
         Util.setInstance(util);
         return util;
     }

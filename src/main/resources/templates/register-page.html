@@ -2,13 +2,15 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link rel="styleSheet" href="style.css" type="text/css" media="screen">
+    <title>Babylon Login</title>
 </head>
 <body>
     <div id="container">
     <div id="wrapper">
         <div id="join" class="animate join">
-            <h1>Join a Room</h1>
+            <h1>Babylon - Live Translation</h1>
+            <h2>Join a meeing</h2>
             <form id="registerForm" action="#" th:action="@{/register}" method="post">
                 <p>
                     <input type="text" name="name" value="" id="name" placeholder="Username" required>
@@ -37,6 +39,8 @@
                 <p class="submit">
                     <input type="submit" name="commit" value="Join!">
                 </p>
+
+                <p th:if="${errorMessage}" th:text="${errorMessage}" class="error"></p>
             </form>
 
         </div>

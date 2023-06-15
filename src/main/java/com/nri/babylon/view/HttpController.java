@@ -4,6 +4,8 @@ import com.nri.babylon.testing.TestLibs;
 import com.nri.babylon.view.model.Register;
 import com.nri.library.text_translation.NRITextTranslation;
 import com.nri.library.tts.NRITextToSpeech;
+import org.kurento.tutorial.groupcall.Room;
+import org.kurento.tutorial.groupcall.RoomManager;
 import org.kurento.tutorial.groupcall.UserSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class HttpController {
@@ -28,21 +31,14 @@ public class HttpController {
     @Autowired
     private TestLibs testLibs;
 
+    @Autowired
+    private RoomManager roomManager;
+
     @GetMapping("/")
     public String getIndex() {
-        return "index";
+        return "redirect:/register";
     }
 
-    @GetMapping("/test-libs")
-    public String getTestLibs() {
-        testLibs.printTest();
-        return "test-lib";
-    }
-
-    @GetMapping("/audioTest")
-    public String index() {
-        return "audioTest";
-    }
 
     @GetMapping("/register")
     public String register(Model model) {
@@ -52,24 +48,38 @@ public class HttpController {
         return "register-page";
     }
 
+    @PostMapping("/register")
+    public String registerSubmit(Model model, @ModelAttribute Register register,
+                                 RedirectAttributes redirectAttributes) {
+        if (!register.validate()) {
+            redirectAttributes.addFlashAttribute("errorMessage", "There was an error in the form data. Please check your inputs.");
+            return "redirect:/register";
+        }
 
-    @GetMapping("/call")
-    public String getIndex2(Model model) {
-        model.addAttribute("voices", nriTextToSpeech.getVoices());
-        model.addAttribute("languages", nriTextTranslation.getSupportedLanguages());
-        return "index2";
+        String name = register.getName();
+        String room = register.getRoom();
+        String voiceId = register.getVoice();
+        String languageId = register.getLanguageId();
+
+        Room room1 = roomManager.getRoom(room);
+        boolean isRoomFull = room1.getParticipants().size() >=2;
+        if (isRoomFull){
+            redirectAttributes.addFlashAttribute("errorMessage", "The room is currently full!");
+            return "redirect:/register";
+        }
+
+        String requestParam =
+                "?name=" + name + "&" + "room="
+                        + room + "&" + "voiceId="
+                        + voiceId + "&" + "languageId=" + languageId;
+        return "redirect:/meet" +requestParam;
     }
 
-
-    @GetMapping("/call2")
-    public String getCall2(Model model,
+    @GetMapping("/meet")
+    public String getMeet(Model model,
                            @RequestParam(name = "name") String name, @RequestParam(name = "room") String room,
                            @RequestParam(name = "voiceId") String voiceId, @RequestParam(name = "languageId") String languageId) {
 
-        log.info("request param: name : " + name);
-        log.info("request param: room : " + room);
-        log.info("request param: voiceId : " + voiceId);
-        log.info("request param: languageId : " + languageId);
         model.addAttribute("myName",name);
         model.addAttribute("myRoomName",room);
         model.addAttribute("myVoice",voiceId);
@@ -77,24 +87,6 @@ public class HttpController {
 
         model.addAttribute("voices", nriTextToSpeech.getVoices());
         model.addAttribute("languages", nriTextTranslation.getSupportedLanguages());
-        return "index2";
-    }
-
-    @PostMapping("/register")
-    public String registerSubmit(Model model, @ModelAttribute Register register) {
-        if (!register.validate())
-            return "redirect:/register";
-
-        String name = register.getName();
-        String room = register.getRoom();
-        String voiceId = register.getVoice();
-        String languageId = register.getLanguageId();
-
-
-        String requestParam =
-                "?name=" + name + "&" + "room="
-                        + room + "&" + "voiceId="
-                        + voiceId + "&" + "languageId=" + languageId;
-        return "redirect:/call2" +requestParam;
+        return "index";
     }
 }

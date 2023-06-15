@@ -24,6 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import com.nri.babylon.Util;
+import com.nri.babylon.config.ColorGenerator;
 import com.nri.library.stt.NRISpeechToText;
 import org.kurento.client.*;
 import org.kurento.jsonrpc.JsonUtils;
@@ -55,6 +56,7 @@ public class UserSession implements Closeable {
   private final WebRtcEndpoint outgoingMedia;
   private final ConcurrentMap<String, WebRtcEndpoint> incomingMedia = new ConcurrentHashMap<>();
   private final RecorderEndpoint recordMyAudio;
+  private final String iconColor;
 
   public UserSession(final String name, String roomName, final WebSocketSession session,
       MediaPipeline pipeline) {
@@ -64,6 +66,7 @@ public class UserSession implements Closeable {
     this.session = session;
     this.roomName = roomName;
     this.outgoingMedia = new WebRtcEndpoint.Builder(pipeline).build();
+    this.iconColor = Util.getUniqueHexColor(name);
 
     //Connect to our recording endpoint
     RecorderEndpoint recordMyAudio = new RecorderEndpoint
@@ -287,5 +290,9 @@ public class UserSession implements Closeable {
     result = 31 * result + name.hashCode();
     result = 31 * result + roomName.hashCode();
     return result;
+  }
+
+  public String getIconColor() {
+    return iconColor;
   }
 }
