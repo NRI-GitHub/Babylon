@@ -44,7 +44,7 @@ public class RoomManager {
   private boolean stopFakeThread = false;
 
   public RoomManager() {
-    startFakeBackgroundThread();
+    startUIBackgroundThread();
   }
 
   /**
@@ -82,7 +82,7 @@ public class RoomManager {
 
 
   private static int fakeCount = 0;
-  private void startFakeBackgroundThread() {
+  private void startUIBackgroundThread() {
     new Thread(() -> {
       while (!stopFakeThread){
         fakeCount++;
