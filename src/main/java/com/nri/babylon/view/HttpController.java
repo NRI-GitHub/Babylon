@@ -1,6 +1,7 @@
 package com.nri.babylon.view;
 
 import com.nri.babylon.testing.TestLibs;
+import com.nri.babylon.view.model.Register;
 import com.nri.library.text_translation.NRITextTranslation;
 import com.nri.library.tts.NRITextToSpeech;
 import org.kurento.tutorial.groupcall.UserSession;
@@ -44,7 +45,10 @@ public class HttpController {
     }
 
     @GetMapping("/register")
-    public String register() {
+    public String register(Model model) {
+        model.addAttribute("voices", nriTextToSpeech.getVoices());
+        model.addAttribute("languages", nriTextTranslation.getSupportedLanguages());
+
         return "register-page";
     }
 
@@ -76,8 +80,8 @@ public class HttpController {
         return "index2";
     }
 
-    @PostMapping("/greeting")
-    public String greetingSubmit(Model model) {
+    @PostMapping("/register")
+    public String greetingSubmit(Model model, @ModelAttribute Register register) {
         String name = "jeffName";
         String room = "testRoom";
         String voiceId = "testVoiceId";
