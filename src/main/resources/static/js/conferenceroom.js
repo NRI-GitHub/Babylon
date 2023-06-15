@@ -53,11 +53,22 @@ ws.onmessage = function(message) {
 	}
 }
 
+function autoRegister() {
+    console.info('auto reg was clicked');
+    registerMain("TimTim", "nri5764a7cc", "voiceId", 1);
+}
+
 function register() {
     name = document.getElementById('name').value;
     var room = document.getElementById('roomName').value;
     var voiceId = document.getElementById('voice').value;
     var languageId = document.getElementById('language').value;
+
+    registerMain(name, room, voiceId, languageId);
+}
+
+function registerMain(name, room, voiceId, languageId){
+
 
     // Check if room name is "nri5764a7cc", if not, show an alert dialog
     if (room !== 'nri5764a7cc') {

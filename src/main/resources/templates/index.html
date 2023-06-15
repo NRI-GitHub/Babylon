@@ -3,6 +3,11 @@
   <head>
     <title>Babylon Meet</title>
     <link rel="stylesheet" href="/css/main.css">
+
+    <script src="/webjars/webrtc-adapter/release/adapter.js"></script>
+    <script src="./js/conferenceroom.js"></script>
+    <script src="./js/participant.js"></script>
+    <script src="./js/kurento-utils.js"></script>
   </head>
   <body>
     <div class="container">
@@ -25,7 +30,7 @@
               <ion-icon name="videocam" size="large"></ion-icon>
             </button>
             <button title="Turn Microphone Off" id="micButton" class="rounded-mic-button-on" type="button"
-              onclick="toggleMic()">
+              onclick="autoRegister()">
               <ion-icon name="mic" size="large"></ion-icon>
             </button>
             <button title="End Call" id="endCallButton" class="rounded-phone-button"
@@ -73,6 +78,58 @@
         </div>
       </div>
     </div>
+
+    <!-- TODO Test do not use me -->
+    <!-- TODO delete me -->
+    <div>
+      <div>
+        <div id="wrapper">
+          <div id="join" class="animate join">
+            <h1>Join a Room</h1>
+            <form onsubmit="register(); return false;" accept-charset="UTF-8">
+              <p>
+                <input type="text" name="name" value="" id="name"
+                       placeholder="Username" required>
+              </p>
+              <p>
+                <input type="text" name="room" value="" id="roomName"
+                       placeholder="Room" required>
+              </p>
+              <p>
+              <div class="input-group">
+                <label for="voice">Select a voice</label>
+                <select id="voice">
+                  <option th:each="voice : ${voices}" th:value="${voice.id}" th:text="${voice.name}"></option>
+                </select>
+              </div>
+              </p>
+
+              <p>
+              <div class="input-group">
+                <label for="language">Select a language</label>
+                <select id="language">
+                  <option th:each="language : ${languages}" th:value="${language.id}" th:text="${language.planText}"></option>
+                </select>
+              </div>
+              </p>
+
+              <p class="submit">
+                <input type="submit" name="commit" value="Join!">
+              </p>
+            </form>
+          </div>
+          <div id="room" style="display: none;">
+            <h2 id="room-header"></h2>
+            <div id="participants"></div>
+            <input type="button" id="button-leave" onmouseup="leaveRoom();"
+                   value="Leave room">
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <!-- Test do not use me -->
+
     <script src="/js/main.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

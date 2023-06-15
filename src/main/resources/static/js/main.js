@@ -62,3 +62,4 @@ function toggleCamera() {
       localStorage.setItem("toggleState", "left");
     }
   });
+
