@@ -20,6 +20,7 @@ package org.kurento.tutorial.groupcall;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
@@ -49,7 +50,7 @@ public class UserSession implements Closeable {
   private final String roomName;
   private final WebRtcEndpoint outgoingMedia;
   private final ConcurrentMap<String, WebRtcEndpoint> incomingMedia = new ConcurrentHashMap<>();
-  private final RecorderEndpoint recordMyAudio;
+  private Map<String, PlayerEndpoint> userPlayerEndpoints = new HashMap<>();
 
   public UserSession(final String name, String roomName, final WebSocketSession session,
       MediaPipeline pipeline) {
@@ -60,33 +61,7 @@ public class UserSession implements Closeable {
     this.roomName = roomName;
     this.outgoingMedia = new WebRtcEndpoint.Builder(pipeline).build();
 
-    //Connect to our recording endpoint
-    RecorderEndpoint recordMyAudio = new RecorderEndpoint
-            .Builder(pipeline, "http://192.168.50.36:8080/acceptAudio/"+roomName+"/"+ name)
-            .withMediaProfile(MediaProfileSpecType.WEBM_AUDIO_ONLY).build();
-
-    outgoingMedia.connect(recordMyAudio, MediaType.AUDIO);
-    recordMyAudio.addMediaFlowInStateChangedListener(event -> {
-      if (event.getMediaType() == MediaType.AUDIO && event.getState() == MediaFlowState.FLOWING) {
-        (new Thread(() -> {
-          try {
-            System.out.println("I'm Sleeping shhhh");
-            Thread.sleep(5000);
-            recordMyAudio.stop();
-          } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-          }
-        })).start();
-      }
-    });
-    recordMyAudio.record();
-    this.recordMyAudio = recordMyAudio;
-
-    PlayerEndpoint receivedAudio = new PlayerEndpoint.Builder(pipeline, "http://192.168.50.36:8080/sendAudio/"+roomName+"/"+ name).build();
-    receivedAudio.connect(outgoingMedia, MediaType.AUDIO);
-    receivedAudio.play();
-
-    receivedAudio.addEndOfStreamListener(event -> receivedAudio.play());
+    startRecording();
 
     this.outgoingMedia.addIceCandidateFoundListener(event -> {
       JsonObject response = new JsonObject();
@@ -101,6 +76,27 @@ public class UserSession implements Closeable {
         log.debug(e.getMessage());
       }
     });
+  }
+
+  public void startRecording() {
+    System.out.println(this.name +" has started recording");
+    //Connect to our recording endpoint
+    RecorderEndpoint recordMyAudio = new RecorderEndpoint
+            .Builder(pipeline, "http://192.168.50.36:8080/acceptAudio/"+roomName+"/"+ name)
+            .withMediaProfile(MediaProfileSpecType.WEBM_AUDIO_ONLY).build();
+
+    outgoingMedia.connect(recordMyAudio, MediaType.AUDIO);
+    recordMyAudio.record();
+
+    (new Thread(() -> {
+      try {
+        System.out.println("I'm Sleeping shhhh");
+        Thread.sleep(5000);
+        recordMyAudio.stop();
+      } catch (InterruptedException e) {
+        throw new RuntimeException(e);
+      }
+    })).start();
   }
 
   public WebRtcEndpoint getOutgoingWebRtcPeer() {
@@ -177,6 +173,17 @@ public class UserSession implements Closeable {
 
     log.debug("PARTICIPANT {}: obtained endpoint for {}", this.name, sender.getName());
     sender.getOutgoingWebRtcPeer().connect(incoming);
+
+    if (!userPlayerEndpoints.containsKey(sender.getName())) {
+      PlayerEndpoint receivedAudio = new PlayerEndpoint.Builder(pipeline, "http://192.168.50.36:8080/sendAudio/"+roomName+"/"+ name).build();
+      receivedAudio.play();
+      receivedAudio.addEndOfStreamListener(event -> receivedAudio.play());
+
+      // Store in map that PlayerEndpoint has been created for this user
+      userPlayerEndpoints.put(sender.getName(), receivedAudio);
+    }
+
+    userPlayerEndpoints.get(sender.getName()).connect(incoming, MediaType.AUDIO);
 
     return incoming;
   }
@@ -260,10 +267,6 @@ public class UserSession implements Closeable {
         webRtc.addIceCandidate(candidate);
       }
     }
-  }
-
-  public RecorderEndpoint getRecordMyAudio() {
-    return recordMyAudio;
   }
 
   /*

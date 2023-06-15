@@ -22,16 +22,18 @@ public class NriAudioCodec implements OutgoingAudioCallback{
     }
 
     public void addListener(IncomingAudioCallback listener, String room, String user){
+        System.out.println("Adding listener id: " + room +"_"+ user);
         listeners.put(room +"_"+ user, listener);
     }
 
     public void createAudioThread(String audioFile, String room, String user){
         AudioThread audioThread = new AudioThread(this, audioFile, room, user, nriSpeechToText, nriTextToSpeech, nriTextTranslation);
-        audioThread.run();
+        audioThread.start();
     }
 
     @Override
     public void onOutgoingAudio(String fileLocation, String roomName, String userName) {
+        System.out.println("finding listener id: " + roomName +"_"+ userName);
         IncomingAudioCallback callback = listeners.get(roomName +"_"+ userName);
         if(callback != null){
             callback.onIncomingAudio(fileLocation, roomName, userName);

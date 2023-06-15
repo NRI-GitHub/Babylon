@@ -83,7 +83,7 @@ public class AudioThread extends Thread implements OnSpeechToTextListener{
             String messageToSay = translatedText;
             UUID fileName = UUID.randomUUID();
             String playbackFile = AudioUtils.saveAudio(nriTextToSpeech.textToSpeech(messageToSay, voice), String.valueOf(fileName));
-            listener.onOutgoingAudio(playbackFile, room, user);
+            listener.onOutgoingAudio(playbackFile, user, room);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -94,6 +94,7 @@ public class AudioThread extends Thread implements OnSpeechToTextListener{
 
     @Override
     public void onIncomingFinalTranscript(String s) {
+        if(s.isBlank() || s.isEmpty()) return;
         speakSaveToFileText(s);
     }
 }

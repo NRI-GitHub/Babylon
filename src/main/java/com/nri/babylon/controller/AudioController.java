@@ -1,11 +1,6 @@
 package com.nri.babylon.controller;
 
-import com.nri.babylon.audio.IncomingAudioCallback;
 import com.nri.babylon.audio.NriAudioCodec;
-import com.nri.library.stt.NRISpeechToText;
-import com.nri.library.stt.listeners.OnSpeechToTextListener;
-import com.nri.library.text_translation.NRITextTranslation;
-import com.nri.library.tts.NRITextToSpeech;
 import jakarta.servlet.http.HttpServletRequest;
 import org.kurento.tutorial.groupcall.RoomManager;
 import org.kurento.tutorial.groupcall.UserSession;
@@ -18,11 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ws.schild.jave.Encoder;
-import ws.schild.jave.EncoderException;
-import ws.schild.jave.MultimediaObject;
-import ws.schild.jave.encode.AudioAttributes;
-import ws.schild.jave.encode.EncodingAttributes;
 
 import java.io.*;
 import java.net.SocketException;
@@ -49,28 +39,31 @@ public class AudioController {
         System.out.println("[Controller::sendAudio] userName : " + userName);
 
         UserSession userSession = roomManager.getRoom(roomName).getParticipant(userName);
+        if(userSession == null) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         System.out.println("[Controller::sendAudio] userSession.getName() : " + userSession.getName());
         String[] translatedAudio = new String[1];
         Object syncObject = new Object();
 
         nriAudioCodec.addListener((fileLocation, room, user) -> {
-            if(roomName.equals(room) && userName.equals(user)) {
-                translatedAudio[0] = fileLocation;
-                synchronized (syncObject) {
-                    syncObject.notify();
-                }
+            translatedAudio[0] = fileLocation;
+            synchronized (syncObject) {
+                System.out.println("[Controller::sendAudio] wake Me UP");
+                syncObject.notify();
             }
         }, roomName, userName);
 
         synchronized (syncObject) {
             try {
+                System.out.println("[Controller::sendAudio] going to SLEEP");
                 syncObject.wait();
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
+        if(translatedAudio[0] == null || translatedAudio[0].isEmpty() || translatedAudio[0].isBlank()) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
+        System.out.println("[Controller::sendAudio] The File: " +translatedAudio[0]);
         File file = new File(translatedAudio[0]);
 
         if (file.exists()) {
@@ -101,6 +94,7 @@ public class AudioController {
         UserSession userSession = roomManager.getRoom(roomName).getParticipant(userName);
         System.out.println("[Controller::sendAudio] userSession.getName() : " + userSession.getName());
         String filePath = null;
+        if(userSession == null) return new ResponseEntity<>(HttpStatus.NO_CONTENT);;
 
         try {
             // Read the input stream from the request
@@ -128,7 +122,7 @@ public class AudioController {
             return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         } finally {
             nriAudioCodec.createAudioThread(filePath, roomName, userName);
-            //userSession.getRecordMyAudio().record();
+            userSession.startRecording();
         }
         System.out.println("[Controller::acceptAudio] Done Receiving audio");
         return new ResponseEntity<>("Audio saved successfully!", HttpStatus.OK);
