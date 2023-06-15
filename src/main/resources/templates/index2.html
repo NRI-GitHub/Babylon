@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <link rel="styleSheet" href="style.css" type="text/css" media="screen">
+	<input type="hidden" id="myName" th:if="${myName != null}" th:value="${myName}" />
+	<input type="hidden" id="myRoomName" th:if="${myRoomName != null}" th:value="${myRoomName}" />
+	<input type="hidden" id="myVoice" th:if="${myVoice != null}" th:value="${myVoice}" />
+	<input type="hidden" id="myLanguage" th:if="${myLanguage != null}" th:value="${myLanguage}" />
 
 <script src="/webjars/webrtc-adapter/release/adapter.js"></script>
 <script src="./js/conferenceroom.js"></script>
@@ -54,5 +58,7 @@
 			</div>
 		</div>
 	</div>
+
+	<script src="/js/register.js"></script>
 </body>
 </html>

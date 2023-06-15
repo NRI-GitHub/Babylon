@@ -66,6 +66,11 @@ public class HttpController {
         log.info("request param: room : " + room);
         log.info("request param: voiceId : " + voiceId);
         log.info("request param: languageId : " + languageId);
+        model.addAttribute("myName",name);
+        model.addAttribute("myRoomName",room);
+        model.addAttribute("myVoice",voiceId);
+        model.addAttribute("myLanguage",languageId);
+
         model.addAttribute("voices", nriTextToSpeech.getVoices());
         model.addAttribute("languages", nriTextTranslation.getSupportedLanguages());
         return "index2";
@@ -73,7 +78,7 @@ public class HttpController {
 
     @PostMapping("/greeting")
     public String greetingSubmit(Model model) {
-        String name = "testName";
+        String name = "jeffName";
         String room = "testRoom";
         String voiceId = "testVoiceId";
         String languageId = "testLangId";
