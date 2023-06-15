@@ -62,28 +62,43 @@ public class UserSession implements Closeable {
 
     //Connect to our recording endpoint
     RecorderEndpoint recordMyAudio = new RecorderEndpoint
-            .Builder(pipeline, "http://192.168.1.94:8080/acceptAudio/"+roomName+"/"+ name)
+            .Builder(pipeline, "http://192.168.50.36:8080/acceptAudio/"+roomName+"/"+ name)
             .withMediaProfile(MediaProfileSpecType.WEBM_AUDIO_ONLY).build();
 
     outgoingMedia.connect(recordMyAudio, MediaType.AUDIO);
+    recordMyAudio.addMediaFlowInStateChangedListener(event -> {
+      if (event.getMediaType() == MediaType.AUDIO && event.getState() == MediaFlowState.FLOWING) {
+        (new Thread(() -> {
+          try {
+            System.out.println("I'm Sleeping shhhh");
+            Thread.sleep(5000);
+            recordMyAudio.stop();
+          } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+          }
+        })).start();
+      }
+    });
     recordMyAudio.record();
     this.recordMyAudio = recordMyAudio;
 
-    this.outgoingMedia.addIceCandidateFoundListener(new EventListener<IceCandidateFoundEvent>() {
+    PlayerEndpoint receivedAudio = new PlayerEndpoint.Builder(pipeline, "http://192.168.50.36:8080/sendAudio/"+roomName+"/"+ name).build();
+    receivedAudio.connect(outgoingMedia, MediaType.AUDIO);
+    receivedAudio.play();
 
-      @Override
-      public void onEvent(IceCandidateFoundEvent event) {
-        JsonObject response = new JsonObject();
-        response.addProperty("id", "iceCandidate");
-        response.addProperty("name", name);
-        response.add("candidate", JsonUtils.toJsonObject(event.getCandidate()));
-        try {
-          synchronized (session) {
-            session.sendMessage(new TextMessage(response.toString()));
-          }
-        } catch (IOException e) {
-          log.debug(e.getMessage());
+    receivedAudio.addEndOfStreamListener(event -> receivedAudio.play());
+
+    this.outgoingMedia.addIceCandidateFoundListener(event -> {
+      JsonObject response = new JsonObject();
+      response.addProperty("id", "iceCandidate");
+      response.addProperty("name", name);
+      response.add("candidate", JsonUtils.toJsonObject(event.getCandidate()));
+      try {
+        synchronized (session) {
+          session.sendMessage(new TextMessage(response.toString()));
         }
+      } catch (IOException e) {
+        log.debug(e.getMessage());
       }
     });
   }

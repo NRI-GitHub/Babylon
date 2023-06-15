@@ -1,5 +1,6 @@
 package com.nri.babylon.config;
 
+import com.nri.babylon.audio.NriAudioCodec;
 import com.nri.babylon.testing.TestLibs;
 import com.nri.library.stt.NRISpeechToText;
 import com.nri.library.text_translation.NRITextTranslation;
@@ -51,6 +52,11 @@ public class GlobalConfig {
     @Bean
     public UserRegistry registry() {
         return new UserRegistry();
+    }
+
+    @Bean
+    public NriAudioCodec audioCodec() {
+        return new NriAudioCodec();
     }
 
     @Bean

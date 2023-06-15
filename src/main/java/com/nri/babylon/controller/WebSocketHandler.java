@@ -267,27 +267,17 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
 
         //Connect to our recording endpoint
-        RecorderEndpoint recordMyAudio = new RecorderEndpoint.Builder(pipeline, "http://192.168.1.94:8080/acceptAudio/"+sessionId).withMediaProfile(MediaProfileSpecType.WEBM_AUDIO_ONLY).build();
+        RecorderEndpoint recordMyAudio = new RecorderEndpoint.Builder(pipeline, "http://192.168.50.36:8080/acceptAudio/"+sessionId).withMediaProfile(MediaProfileSpecType.WEBM_AUDIO_ONLY).build();
         webRtcEp.connect(recordMyAudio, MediaType.AUDIO);
         recordMyAudio.record();
 
         //Playback the translated audio
-        PlayerEndpoint receivedAudio = new PlayerEndpoint.Builder(pipeline, "http://192.168.1.94:8080/sendAudio/"+sessionId).build();
+        PlayerEndpoint receivedAudio = new PlayerEndpoint.Builder(pipeline, "http://192.168.50.36:8080/sendAudio/"+sessionId).build();
         receivedAudio.connect(webRtcEp, MediaType.AUDIO);
 
         // ---- Endpoint configuration
         String sdpOffer = jsonMessage.get("sdpOffer").getAsString();
         initWebRtcEndpoint(session, webRtcEp, sdpOffer);
-
-        new Thread(() -> {
-            try {
-                stopAndStartAudioTest(receivedAudio);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }).start();
-
-        // ---- Endpoint startup
         startWebRtcEndpoint(webRtcEp);
     }
 
@@ -341,44 +331,6 @@ public class WebSocketHandler extends TextWebSocketHandler {
         log.info("Assume that the other side stops after an error...");
         stop(session);
     }
-
-
-    // ---------------------------------------------------------------------------
-    private void stopAndStartAudioTest(PlayerEndpoint audio) throws InterruptedException {
-        // Connect the next PlayerEndpoint, if it exists
-        Thread.sleep(5000);
-        audio.play();
-
-
-        Thread.sleep(5000);
-        // Disconnect the current PlayerEndpoint
-        audio.stop();
-    }
-
-    public void startRecordingWhenAudioOccurs(MediaPipeline pipeline, WebRtcEndpoint webRtcEp) {
-        // Specify the URI where the recording should be stored
-        String recordingUri = "file:///path/to/recorded/file.webm";
-
-        // Create the RecorderEndpoint
-        RecorderEndpoint recorderEndpoint = new RecorderEndpoint.Builder(pipeline, recordingUri)
-                .withMediaProfile(MediaProfileSpecType.WEBM_AUDIO_ONLY)
-                .build();
-
-        // Connect the WebRtcEndpoint to the RecorderEndpoint (for audio)
-        webRtcEp.connect(recorderEndpoint, MediaType.AUDIO);
-
-        // Listen for the MediaFlowInStateChanged event
-        recorderEndpoint.addMediaFlowInStateChangeListener(event -> {
-            // Check if the media type is AUDIO
-            if (event.getMediaType() == MediaType.AUDIO && event.getState() == MediaFlowState.FLOWING) {
-                // Start recording
-                recorderEndpoint.record();
-                System.out.println("Recording started");
-            }
-        });
-    }
-
-
     public UserSession getUserById(String sessionId){
         return users.get(sessionId);
     }
