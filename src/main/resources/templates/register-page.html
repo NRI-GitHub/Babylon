@@ -9,7 +9,7 @@
     <div id="wrapper">
         <div id="join" class="animate join">
             <h1>Join a Room</h1>
-            <form action="#" th:action="@{/register}" method="post">
+            <form id="registerForm" action="#" th:action="@{/register}" method="post">
                 <p>
                     <input type="text" name="name" value="" id="name" placeholder="Username" required>
                 </p>
@@ -48,5 +48,7 @@
         </div>
     </div>
 </div>
+
+    <script src="/js/register-home.js"></script>
 </body>
 </html>

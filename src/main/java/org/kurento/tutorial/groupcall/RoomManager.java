@@ -93,6 +93,9 @@ public class RoomManager {
             String name = participant.getName();
             String id = participant.getSession().getId();
             String fakeMessage = "fake message from : " + name + " : "+fakeCount;
+            if (name.substring(0,2).contains("A")){
+              id = "user1";
+            }
             AudioLogMessage audioLogMessage = new AudioLogMessage(fakeMessage, id, name);
 
             try {

@@ -38,5 +38,20 @@ public class Register {
     public void setLanguageId(String languageId) {
         this.languageId = languageId;
     }
+
+    public boolean validate() {
+        if (name == null || name.isEmpty())
+            return false;
+        if (room == null || room.isEmpty())
+            return false;
+        if (voice == null || voice.isEmpty())
+            return false;
+        if (languageId == null || languageId.isEmpty())
+            return false;
+
+
+        name = name.replace(" ", "_");
+        return true;
+    }
 }
 

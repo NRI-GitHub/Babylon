@@ -81,11 +81,14 @@ public class HttpController {
     }
 
     @PostMapping("/register")
-    public String greetingSubmit(Model model, @ModelAttribute Register register) {
-        String name = "jeffName";
-        String room = "testRoom";
-        String voiceId = "testVoiceId";
-        String languageId = "testLangId";
+    public String registerSubmit(Model model, @ModelAttribute Register register) {
+        if (!register.validate())
+            return "redirect:/register";
+
+        String name = register.getName();
+        String room = register.getRoom();
+        String voiceId = register.getVoice();
+        String languageId = register.getLanguageId();
 
 
         String requestParam =

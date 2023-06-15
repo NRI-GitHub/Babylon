@@ -23,6 +23,11 @@ window.onbeforeunload = function() {
 	ws.close();
 };
 
+ws.onopen = function(event) {
+  console.log('WebSocket is open now.');
+  tryAutoLogin();
+};
+
 ws.onmessage = function(message) {
 	var parsedMessage = JSON.parse(message.data);
 	console.info('Received message: ' + message.data);
