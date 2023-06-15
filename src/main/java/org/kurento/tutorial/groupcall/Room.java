@@ -27,6 +27,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import javax.annotation.PreDestroy;
 
+import com.nri.babylon.view.model.AudioLogMessage;
 import org.kurento.client.Continuation;
 import org.kurento.client.MediaPipeline;
 import org.slf4j.Logger;
@@ -141,6 +142,16 @@ public class Room implements Closeable {
     log.debug("PARTICIPANT {}: sending a list of {} participants", user.getName(),
         participantsArray.size());
     user.sendMessage(existingParticipantsMsg);
+  }
+
+  public void sendAudioLog(AudioLogMessage audioLogMessage) throws IOException {
+    for (UserSession participant : getParticipants()) {
+      final JsonObject incomingAudioLogMsg = new JsonObject();
+      incomingAudioLogMsg.addProperty("id", "incomingAudioLog");
+      incomingAudioLogMsg.add("data", audioLogMessage.toJson());
+
+      participant.sendMessage(incomingAudioLogMsg);
+    }
   }
 
   public Collection<UserSession> getParticipants() {

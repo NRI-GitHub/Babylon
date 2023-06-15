@@ -31,6 +31,9 @@ ws.onmessage = function(message) {
 	case 'existingParticipants':
 		onExistingParticipants(parsedMessage);
 		break;
+	case 'incomingAudioLog':
+		onIncomingAudioLog(parsedMessage);
+		break;
 	case 'newParticipantArrived':
 		onNewParticipant(parsedMessage);
 		break;
@@ -183,6 +186,15 @@ function onParticipantLeft(request) {
 	var participant = participants[request.name];
 	participant.dispose();
 	delete participants[request.name];
+}
+
+function onIncomingAudioLog(parsedMessage) {
+    var message = parsedMessage.data.message;
+    var userId = parsedMessage.data.userId;
+    var userName = parsedMessage.data.userName;
+	console.log("message :" + message);
+	console.log("userId :" + userId);
+	console.log("userId :" + userName);
 }
 
 function sendMessage(message) {
