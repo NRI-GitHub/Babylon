@@ -69,7 +69,7 @@ public class GlobalConfig {
 
     @Bean
     public KurentoClient kurentoClient() {
-        return KurentoClient.create();
+        return KurentoClient.create("ws://localhost:32769/kurento");
     }
 
     @Bean

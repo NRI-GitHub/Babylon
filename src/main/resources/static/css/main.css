@@ -385,3 +385,31 @@
   .flag {
     width: 2vw;
   }
+
+  .participant video {
+      position: absolute;
+          top: 1vh;
+          right: 1vw;
+          z-index: 2;
+          box-shadow: rgba(0, 0, 0, 0.1) -9px 9px 11px 5px;
+          width: 15vw;
+          border-radius: 12px;
+      object-fit: cover;
+  }
+
+  .participant.main video {
+    position: relative;
+    left:0vw;
+    z-index: 1;
+    width: 60vw;
+    height: 65vh;
+    background-color: #f5f5f5;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    border-radius: 12px;
+    flex-direction: column;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+  }

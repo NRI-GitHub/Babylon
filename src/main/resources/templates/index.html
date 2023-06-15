@@ -17,8 +17,7 @@
           <h1 class="meeting-title">Status Update Meeting | Réunion pour faire le point</h1>
         </div>
         <div class="contain">
-          <img src="/images/stock image.webp"
-            alt="FaceTime background image" class="background-image" draggable="false">
+          <div id="participants" alt="FaceTime background image" class="background-image" draggable="false"></div>
             <div class="flag-bar">
               <img class="flag" src="/images/american flag.png" alt="">
             </div>
@@ -38,8 +37,6 @@
               <ion-icon name="call" size="large"></ion-icon>
             </button>
           </div>
-          <img src="/images/stock image 2.webp"
-            alt="FaceTime call image" class="call-image" draggable="false">
             <div>
               <h2 class="audio-log-title">Audio Logs</h2>
               <div class="form-box">
@@ -131,6 +128,10 @@
     <!-- Test do not use me -->
 
     <script src="/js/main.js"></script>
+    <script src="/webjars/webrtc-adapter/release/adapter.js"></script>
+    <script src="./js/conferenceroom.js"></script>
+    <script src="./js/participant.js"></script>
+    <script src="./js/kurento-utils.js"></script>
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   </body>
