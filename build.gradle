@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.nri'
-version = '0.0.10'
+version = '0.0.16'
 sourceCompatibility = '17'
 
 repositories {
@@ -57,7 +57,7 @@ dependencies {
 
 	implementation files('libs/nri_speech_to_text_lib-0.0.6.jar')
 	implementation files('libs/nri_text_to_speech_lib-0.0.1.jar')
-	implementation files('libs/nri_text_translation_lib-0.0.1.jar')
+	implementation files('libs/nri_text_translation_lib-0.0.3.jar')
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
@@ -70,4 +70,5 @@ tasks.named('test') {
 // Additional BootJar task for packaging into a JAR
 bootJar {
 	mainClass = 'com.nri.babylon.BabylonApplication'
+	exclude '**/audio/**'
 }

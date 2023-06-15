@@ -97,7 +97,10 @@ public class CallHandler extends TextWebSocketHandler {
   private void joinRoom(JsonObject params, WebSocketSession session) throws IOException {
     final String roomName = params.get("room").getAsString();
     final String name = params.get("name").getAsString();
+    final String languageId = params.get("languageId").getAsString();
+    final String voiceId = params.get("voiceId").getAsString();
     log.info("PARTICIPANT {}: trying to join room {}", name, roomName);
+    log.info("languageId {}: voiceId {}", languageId, voiceId);
 
     if (roomName == null || roomName.isEmpty() || !roomName.contentEquals("nri5764a7cc")) {
       log.info("PARTICIPANT {}: unsupported room {}", name, roomName);

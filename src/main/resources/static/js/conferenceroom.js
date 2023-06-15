@@ -56,6 +56,8 @@ ws.onmessage = function(message) {
 function register() {
     name = document.getElementById('name').value;
     var room = document.getElementById('roomName').value;
+    var voiceId = document.getElementById('voice').value;
+    var languageId = document.getElementById('language').value;
 
     // Check if room name is "nri5764a7cc", if not, show an alert dialog
     if (room !== 'nri5764a7cc') {
@@ -71,6 +73,8 @@ function register() {
         id : 'joinRoom',
         name : name,
         room : room,
+        languageId : languageId,
+        voiceId : voiceId
     }
     sendMessage(message);
 }

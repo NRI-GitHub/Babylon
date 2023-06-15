@@ -1,15 +1,24 @@
 package com.nri.babylon.view;
 
 import com.nri.babylon.testing.TestLibs;
+import com.nri.library.text_translation.NRITextTranslation;
+import com.nri.library.tts.NRITextToSpeech;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class HttpController {
 
     @Autowired
-    TestLibs testLibs;
+    private NRITextToSpeech nriTextToSpeech;
+
+    @Autowired
+    private NRITextTranslation nriTextTranslation;
+
+    @Autowired
+    private TestLibs testLibs;
 
     @GetMapping("/")
     public String getIndex(){
@@ -29,7 +38,9 @@ public class HttpController {
 
 
     @GetMapping("/call")
-    public String getIndex2(){
+    public String getIndex2(Model model) {
+        model.addAttribute("voices", nriTextToSpeech.getVoices());
+        model.addAttribute("languages", nriTextTranslation.getSupportedLanguages());
         return "index2";
     }
 }

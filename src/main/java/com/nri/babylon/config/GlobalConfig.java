@@ -1,5 +1,6 @@
 package com.nri.babylon.config;
 
+import com.nri.babylon.Util;
 import com.nri.babylon.testing.TestLibs;
 import com.nri.library.stt.NRISpeechToText;
 import com.nri.library.text_translation.NRITextTranslation;
@@ -24,6 +25,9 @@ public class GlobalConfig {
     @Value("${nri.api.text_translation.key}")
     private String textTranslation;
 
+
+    @Value("${nri.api.recorder_endpoint_ip_address}")
+    private String recorderEndpointIpAddress;
 
     @Bean
     public TestLibs testLibsProvider(){
@@ -66,6 +70,13 @@ public class GlobalConfig {
     @Bean
     public KurentoClient kurentoClient() {
         return KurentoClient.create();
+    }
+
+    @Bean
+    public Util getUtil() {
+        Util util = new Util(recorderEndpointIpAddress);
+        Util.setInstance(util);
+        return util;
     }
 
     @Bean

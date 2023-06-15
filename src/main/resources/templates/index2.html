@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <meta charset="utf-8">
 <link rel="styleSheet" href="style.css" type="text/css" media="screen">
@@ -22,6 +23,24 @@
 						<input type="text" name="room" value="" id="roomName"
 							placeholder="Room" required>
 					</p>
+					<p>
+					<div class="input-group">
+						<label for="voice">Select a voice</label>
+						<select id="voice">
+							<option th:each="voice : ${voices}" th:value="${voice.id}" th:text="${voice.name}"></option>
+						</select>
+					</div>
+					</p>
+
+					<p>
+					<div class="input-group">
+						<label for="language">Select a language</label>
+						<select id="language">
+							<option th:each="language : ${languages}" th:value="${language.id}" th:text="${language.planText}"></option>
+						</select>
+					</div>
+					</p>
+
 					<p class="submit">
 						<input type="submit" name="commit" value="Join!">
 					</p>

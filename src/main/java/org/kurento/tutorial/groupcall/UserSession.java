@@ -23,10 +23,14 @@ import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import com.nri.babylon.Util;
+import com.nri.library.stt.NRISpeechToText;
 import org.kurento.client.*;
 import org.kurento.jsonrpc.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -40,6 +44,7 @@ import com.google.gson.JsonObject;
 public class UserSession implements Closeable {
 
   private static final Logger log = LoggerFactory.getLogger(UserSession.class);
+
 
   private final String name;
   private final WebSocketSession session;
@@ -62,7 +67,7 @@ public class UserSession implements Closeable {
 
     //Connect to our recording endpoint
     RecorderEndpoint recordMyAudio = new RecorderEndpoint
-            .Builder(pipeline, "http://192.168.1.94:8080/acceptAudio/"+roomName+"/"+ name)
+            .Builder(pipeline, "https://"+Util.recorderEndpointIpAddress()+"/acceptAudio/"+roomName+"/"+ name)
             .withMediaProfile(MediaProfileSpecType.WEBM_AUDIO_ONLY).build();
 
     outgoingMedia.connect(recordMyAudio, MediaType.AUDIO);
