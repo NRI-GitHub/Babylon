@@ -23,11 +23,6 @@ window.onbeforeunload = function() {
 	ws.close();
 };
 
-ws.onopen = function(event) {
-  console.log('WebSocket is open now.');
-  tryAutoLogin();
-};
-
 ws.onmessage = function(message) {
 	var parsedMessage = JSON.parse(message.data);
 	console.info('Received message: ' + message.data);
@@ -194,13 +189,42 @@ function onParticipantLeft(request) {
 }
 
 function onIncomingAudioLog(parsedMessage) {
-    var message = parsedMessage.data.message;
-    var userId = parsedMessage.data.userId;
-    var userName = parsedMessage.data.userName;
-	console.log("message :" + message);
-	console.log("userId :" + userId);
-	console.log("userId :" + userName);
+  var message = parsedMessage.data.message;
+  var userId = parsedMessage.data.userId;
+  var userName = parsedMessage.data.userName;
+
+  // Create chat entry elements
+  var chatEntry = document.createElement('div');
+  chatEntry.className = 'log-entry';
+  var userImage = document.createElement('div');
+  userImage.className = 'person-picture';
+  userImage.textContent = userName.charAt(0); // Set the first character of the name as the icon
+
+  // Set background color based on user
+  if (userId === 'user1') {
+    userImage.style.backgroundColor = '#FFA500'; // Set color for user1
+  } else {
+    userImage.style.backgroundColor = '#00BFFF'; // Set color for user2
+  }
+
+  var logContent = document.createElement('div');
+  logContent.className = 'log-content';
+  var messageParagraph = document.createElement('p');
+  messageParagraph.textContent = message;
+
+  // Append elements to chat entry
+  logContent.appendChild(messageParagraph);
+  chatEntry.appendChild(userImage);
+  chatEntry.appendChild(logContent);
+
+  // Append chat entry to the chat box
+  var chatBox = document.getElementById('chat-box');
+  chatBox.appendChild(chatEntry);
+
+  // Scroll to the bottom of the chat box
+  chatBox.scrollTop = chatBox.scrollHeight;
 }
+
 
 function sendMessage(message) {
 	var jsonMessage = JSON.stringify(message);

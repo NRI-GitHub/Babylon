@@ -223,8 +223,7 @@
 
   #chat-box {
      width: 26vw;
-    height: 65vh;
-    border: 1px solid #ccc;
+    height: 48vh;
     overflow: hidden;
   }
   
@@ -240,6 +239,27 @@
     align-items: center;
     padding: 10px;
   }
+
+  .person-picture {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      background-color: #a900ff; /* Set your desired color here */
+      border-radius: 50%; /* Make it a circle */
+      color: #FFF;
+      font-size: 18px;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+    .person-picture:first-child {
+      background-color: #FFA500; /* Set color for the first person */
+    }
+
+    .person-picture:second-child {
+      background-color: #00BFFF; /* Set color for the second person */
+    }
   
   #message-input {
     flex: 1;
