@@ -7,19 +7,16 @@
   <body>
     <div class="container">
       <div class="second-background">
-        <div style="border-bottom-style: inset;
-        display: flex;
-        align-items: center;">
-          <img src="../static/images/icons8-camera-64.png"
-            class="topCameraIcon" draggable="false">
-          <h1 style="font-size: large;
-            font-family: sans-serif;">Status Update Meeting | Réunion pour faire le
-            point</h1>
+        <div class="top-meeting-section">
+          <img src="../static/images/icons8-camera-64.png" class="topCameraIcon" draggable="false">
+          <h1 class="meeting-title">Status Update Meeting | Réunion pour faire le point</h1>
         </div>
-        <div class="contain" style="padding-top: 4vh;
-        padding-left: 2vw; gap: 20px;">
+        <div class="contain">
           <img src="../static/images/stock image.webp"
             alt="FaceTime background image" class="background-image" draggable="false">
+            <div class="flag-bar">
+              <img class="flag" src="../static/images/american flag.png" alt="">
+            </div>
           <div class="call-bar">
             <button title="Settings" class="rounded-settings-button">
               <ion-icon name="ellipsis-vertical" size="large"></ion-icon>
@@ -35,24 +32,16 @@
               type="button" onclick="endCall()">
               <ion-icon name="call" size="large"></ion-icon>
             </button>
-            <!-- <button title="Toggle Messages" class="rounded-camera-button-on">
-              <ion-icon name="chatbox" size="large"></ion-icon>
-            </button> -->
           </div>
           <img src="../static/images/stock image 2.webp"
             alt="FaceTime call image" class="call-image" draggable="false">
             <div>
-              <h2 style="display: flex;
-              font-family: sans-serif;
-              padding-top: 2vh;
-              padding: 15px;
-              border-bottom: inset;
-              justify-content: center;">Audio Logs</h2>
+              <h2 class="audio-log-title">Audio Logs</h2>
               <div class="form-box">
                 <div class="button-box">
                   <div id="btn"></div>
-                  <button title="Translated Audio Logs" type="button" class="toggle-btn" onclick="leftClick()">Translated</button>
-                  <button title="Native Audio Logs" type="button" class="toggle-btn" onclick="rightClick()">Native</button>
+                  <button id="translatedBtn" title="Translated Audio Logs" type="button" class="toggle-btn" onclick="leftClick()">Translated</button>
+                  <button id="nativeBtn" title="Native Audio Logs" type="button" class="toggle-btn" onclick="rightClick()">Native</button>
                 </div>
               </div>
             <div class="audio-log">
@@ -79,12 +68,9 @@
                   <p>Absolutely! Our sales have been steadily increasing over the past quarter. We've seen a 10% growth compared to the same period last year.</p>
                 </div>
               </div>
-          
-              <!-- Add more log entries as needed -->
             </div>
             </div>
         </div>
-
       </div>
     </div>
     <script src="../static/js/main.js"></script>
