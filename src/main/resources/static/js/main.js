@@ -36,30 +36,30 @@ function endCall() {
   alert("Call Ended!");
 }
 
-function leftClick() {
-  var btn = document.getElementById("btn");
-  btn.style.transform = "translateX(0)";
-  document.getElementById("translatedBtn").style.color = "#fff";
-  document.getElementById("nativeBtn").style.color = "#000";
-}
-
-function rightClick() {
-  var btn = document.getElementById("btn");
-  btn.style.transform = "translateX(110px)";
-  document.getElementById("translatedBtn").style.color = "#000";
-  document.getElementById("nativeBtn").style.color = "#fff";
-}
-
-document.addEventListener("DOMContentLoaded", function () {
-  var toggleState = localStorage.getItem("toggleState");
-  if (toggleState === "left") {
-    leftClick();
-  } else if (toggleState === "right") {
-    rightClick();
-  } else {
-    // Set initial state when no toggle state is stored
-    leftClick();
-    localStorage.setItem("toggleState", "left");
-  }
-});
+//function leftClick() {
+//  var btn = document.getElementById("btn");
+//  btn.style.transform = "translateX(0)";
+//  document.getElementById("translatedBtn").style.color = "#fff";
+//  document.getElementById("nativeBtn").style.color = "#000";
+//}
+//
+//function rightClick() {
+//  var btn = document.getElementById("btn");
+//  btn.style.transform = "translateX(110px)";
+//  document.getElementById("translatedBtn").style.color = "#000";
+//  document.getElementById("nativeBtn").style.color = "#fff";
+//}
+//
+//document.addEventListener("DOMContentLoaded", function () {
+//  var toggleState = localStorage.getItem("toggleState");
+//  if (toggleState === "left") {
+//    leftClick();
+//  } else if (toggleState === "right") {
+//    rightClick();
+//  } else {
+//    // Set initial state when no toggle state is stored
+//    leftClick();
+//    localStorage.setItem("toggleState", "left");
+//  }
+//});
 
