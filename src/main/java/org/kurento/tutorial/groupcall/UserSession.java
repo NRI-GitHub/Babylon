@@ -95,40 +95,23 @@ public class UserSession implements Closeable {
       }
     });
   }
-  Integer count = 0;
 
   public void startRecording() {
     System.out.println(this.name +" has started recording");
     //Connect to our recording endpoint
     String ipAddress = Util.recorderEndpointIpAddress();
-    String userNameKey = this.getName();
-    String roomNameKey = this.getRoomName();
-    String fileName = userNameKey + "--" + roomNameKey + ".webm";
     RecorderEndpoint recordMyAudio = new RecorderEndpoint
-            .Builder(pipeline, "file:///audio2/"+fileName)
+            .Builder(pipeline, "http://"+ipAddress+"/acceptAudio/"+roomName+"/"+ name)
             .withMediaProfile(MediaProfileSpecType.WEBM_AUDIO_ONLY).build();
 
     outgoingMedia.connect(recordMyAudio, MediaType.AUDIO);
     recordMyAudio.record();
-    recordMyAudio.addStoppedListener(new EventListener<StoppedEvent>() {
-      @Override
-      public void onEvent(StoppedEvent event) {
-        count++;
-        if (count >= 7)return;
-
-        String fileName1 = "./audio2/" + fileName;
-        AudioUtils.copyFile(fileName1, "./audio2/"+"testing_" + count+"_" +fileName);
-        //AudioUtils.deleteFile(fileName1);
-        recordMyAudio.record();
-      }
-    });
 
     (new Thread(() -> {
       try {
         System.out.println("I'm Sleeping shhhh");
         Thread.sleep(5000);
         recordMyAudio.stop();
-        System.out.println("I'm Done Sleeping");
       } catch (InterruptedException e) {
         e.printStackTrace();
       }

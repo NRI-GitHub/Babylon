@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.nri'
-version = '0.0.16'
+version = '0.0.19'
 sourceCompatibility = '17'
 
 repositories {
@@ -70,5 +70,4 @@ tasks.named('test') {
 // Additional BootJar task for packaging into a JAR
 bootJar {
 	mainClass = 'com.nri.babylon.BabylonApplication'
-	exclude '**/audio/**'
 }
