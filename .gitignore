@@ -37,3 +37,4 @@ out/
 .vscode/
 /libs/
 /audio/
+/src/main/resources/application.properties
