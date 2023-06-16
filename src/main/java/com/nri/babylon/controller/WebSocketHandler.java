@@ -267,12 +267,12 @@ public class WebSocketHandler extends TextWebSocketHandler {
 
 
         //Connect to our recording endpoint
-        RecorderEndpoint recordMyAudio = new RecorderEndpoint.Builder(pipeline, "http://192.168.50.36:8080/acceptAudio/"+sessionId).withMediaProfile(MediaProfileSpecType.WEBM_AUDIO_ONLY).build();
+        RecorderEndpoint recordMyAudio = new RecorderEndpoint.Builder(pipeline, "http://192.168.1.94:8080/acceptAudio/"+sessionId).withMediaProfile(MediaProfileSpecType.WEBM_AUDIO_ONLY).build();
         webRtcEp.connect(recordMyAudio, MediaType.AUDIO);
         recordMyAudio.record();
 
         //Playback the translated audio
-        PlayerEndpoint receivedAudio = new PlayerEndpoint.Builder(pipeline, "http://192.168.50.36:8080/sendAudio/"+sessionId).build();
+        PlayerEndpoint receivedAudio = new PlayerEndpoint.Builder(pipeline, "http://192.168.1.94:8080/sendAudio/"+sessionId).build();
         receivedAudio.connect(webRtcEp, MediaType.AUDIO);
 
         // ---- Endpoint configuration

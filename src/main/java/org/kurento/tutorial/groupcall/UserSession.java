@@ -82,7 +82,7 @@ public class UserSession implements Closeable {
     System.out.println(this.name +" has started recording");
     //Connect to our recording endpoint
     RecorderEndpoint recordMyAudio = new RecorderEndpoint
-            .Builder(pipeline, "http://192.168.50.36:8080/acceptAudio/"+roomName+"/"+ name)
+            .Builder(pipeline, "http://192.168.1.94:8080/acceptAudio/"+roomName+"/"+ name)
             .withMediaProfile(MediaProfileSpecType.WEBM_AUDIO_ONLY).build();
 
     outgoingMedia.connect(recordMyAudio, MediaType.AUDIO);
@@ -175,7 +175,7 @@ public class UserSession implements Closeable {
     sender.getOutgoingWebRtcPeer().connect(incoming);
 
     if (!userPlayerEndpoints.containsKey(sender.getName())) {
-      PlayerEndpoint receivedAudio = new PlayerEndpoint.Builder(pipeline, "http://192.168.50.36:8080/sendAudio/"+roomName+"/"+ name).build();
+      PlayerEndpoint receivedAudio = new PlayerEndpoint.Builder(pipeline, "http://192.168.1.94:8080/sendAudio/"+roomName+"/"+ name).build();
       receivedAudio.play();
       receivedAudio.addEndOfStreamListener(event -> receivedAudio.play());
 
