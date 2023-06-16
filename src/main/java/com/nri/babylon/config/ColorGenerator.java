@@ -23,6 +23,6 @@ public class ColorGenerator {
 
         usedColors.add(color);
 
-        return String.format("#%02x%02x%02x", color, color, color);
+        return "#ffa500";
     }
 }

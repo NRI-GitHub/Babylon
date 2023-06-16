@@ -19,6 +19,9 @@ package org.kurento.tutorial.groupcall;
 
 import java.io.IOException;
 
+import com.nri.babylon.Util;
+import com.nri.library.text_translation.enums.SupportedLanguage;
+import com.nri.library.tts.model.Voice;
 import org.kurento.client.IceCandidate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -108,9 +111,19 @@ public class CallHandler extends TextWebSocketHandler {
       return;
     }
 
-    Room room = roomManager.getRoom(roomName);
-    final UserSession user = room.join(name, session);
-    registry.register(user);
+    try {
+      SupportedLanguage userLanguage =  Util.getSupportedLanguage(languageId);
+      Voice userVoice =  Util.getVoice(voiceId);
+
+      Room room = roomManager.getRoom(roomName);
+      final UserSession user = room.join(name, session, userVoice, userLanguage);
+
+      registry.register(user);
+    }catch (Exception e){
+      e.printStackTrace();
+      log.info("PARTICIPANT {}: error {}", name, roomName);
+    }
+
   }
 
   private void leaveRoom(UserSession user) throws IOException {

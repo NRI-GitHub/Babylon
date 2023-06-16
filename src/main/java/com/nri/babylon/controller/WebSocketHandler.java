@@ -3,6 +3,7 @@ package com.nri.babylon.controller;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.nri.babylon.Util;
 import org.kurento.client.*;
 import org.kurento.jsonrpc.JsonUtils;
 import org.kurento.tutorial.groupcall.UserSession;
@@ -253,7 +254,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         String sessionId = session.getId();
         log.info("[Handler::handleStart] User count: {}", users.size());
         log.info("[Handler::handleStart] New user, id: {}", sessionId);
-        UserSession user = new UserSession(null, null, null, null);
+        UserSession user = new UserSession(null, null, null, null, null, null);
         users.put(sessionId, user);
 
         // ---- Media pipeline
@@ -265,14 +266,15 @@ public class WebSocketHandler extends TextWebSocketHandler {
         //user.setWebRtcEndpoint(webRtcEp);
         webRtcEp.connect(webRtcEp, MediaType.VIDEO);
 
+        String ipAddress = Util.recorderEndpointIpAddress();
 
         //Connect to our recording endpoint
-        RecorderEndpoint recordMyAudio = new RecorderEndpoint.Builder(pipeline, "http://192.168.1.94:8080/acceptAudio/"+sessionId).withMediaProfile(MediaProfileSpecType.WEBM_AUDIO_ONLY).build();
+        RecorderEndpoint recordMyAudio = new RecorderEndpoint.Builder(pipeline, "https://"+ipAddress+"/acceptAudio/"+sessionId).withMediaProfile(MediaProfileSpecType.WEBM_AUDIO_ONLY).build();
         webRtcEp.connect(recordMyAudio, MediaType.AUDIO);
         recordMyAudio.record();
 
         //Playback the translated audio
-        PlayerEndpoint receivedAudio = new PlayerEndpoint.Builder(pipeline, "http://192.168.1.94:8080/sendAudio/"+sessionId).build();
+        PlayerEndpoint receivedAudio = new PlayerEndpoint.Builder(pipeline, "https://"+ipAddress+"/sendAudio/"+sessionId).build();
         receivedAudio.connect(webRtcEp, MediaType.AUDIO);
 
         // ---- Endpoint configuration

@@ -1,7 +1,9 @@
 package com.nri.babylon.controller;
 
 import com.nri.babylon.audio.NriAudioCodec;
+import com.nri.library.text_translation.enums.SupportedLanguage;
 import jakarta.servlet.http.HttpServletRequest;
+import org.kurento.tutorial.groupcall.Room;
 import org.kurento.tutorial.groupcall.RoomManager;
 import org.kurento.tutorial.groupcall.UserSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.*;
 import java.net.SocketException;
-import java.nio.file.Files;
+import java.util.Collection;
 import java.util.UUID;
 
 @RestController
@@ -91,7 +93,8 @@ public class AudioController {
                                          @PathVariable("userName") String userName) {
         System.out.println("[Controller::acceptAudio] Received Media");
 
-        UserSession userSession = roomManager.getRoom(roomName).getParticipant(userName);
+        Room room = roomManager.getRoom(roomName);
+        UserSession userSession = room.getParticipant(userName);
         System.out.println("[Controller::sendAudio] userSession.getName() : " + userSession.getName());
         String filePath = null;
         if(userSession == null) return new ResponseEntity<>(HttpStatus.NO_CONTENT);;
@@ -121,10 +124,23 @@ public class AudioController {
             e.printStackTrace();
             return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         } finally {
-            nriAudioCodec.createAudioThread(filePath, roomName, userName);
+            SupportedLanguage nativeLanguage = userSession.getNativeLanguage();
+            SupportedLanguage translateInto = getOtherPartyNativeLanguage(room, userSession);
+            nriAudioCodec.createAudioThread(filePath, room, userSession, nativeLanguage, translateInto);
             userSession.startRecording();
         }
         System.out.println("[Controller::acceptAudio] Done Receiving audio");
         return new ResponseEntity<>("Audio saved successfully!", HttpStatus.OK);
+    }
+
+    private SupportedLanguage getOtherPartyNativeLanguage(Room room, UserSession userSpeakerPerson) {
+        Collection<UserSession> participants = room.getParticipants();
+        for (UserSession listeningPerson : participants) {
+            if (listeningPerson.equals(userSpeakerPerson))
+                continue;
+
+            return listeningPerson.getNativeLanguage();
+        }
+        return null;
     }
 }

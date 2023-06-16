@@ -2,7 +2,10 @@ package com.nri.babylon.audio;
 
 import com.nri.library.stt.NRISpeechToText;
 import com.nri.library.text_translation.NRITextTranslation;
+import com.nri.library.text_translation.enums.SupportedLanguage;
 import com.nri.library.tts.NRITextToSpeech;
+import org.kurento.tutorial.groupcall.Room;
+import org.kurento.tutorial.groupcall.UserSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
@@ -26,8 +29,9 @@ public class NriAudioCodec implements OutgoingAudioCallback{
         listeners.put(room +"_"+ user, listener);
     }
 
-    public void createAudioThread(String audioFile, String room, String user){
-        AudioThread audioThread = new AudioThread(this, audioFile, room, user, nriSpeechToText, nriTextToSpeech, nriTextTranslation);
+    public void createAudioThread(String audioFile, Room room, UserSession user, SupportedLanguage fromLanguage, SupportedLanguage toLanguage){
+        AudioThread audioThread = new AudioThread(this, audioFile, user, room, nriSpeechToText, nriTextToSpeech,
+                nriTextTranslation, fromLanguage, toLanguage);
         audioThread.start();
     }
 

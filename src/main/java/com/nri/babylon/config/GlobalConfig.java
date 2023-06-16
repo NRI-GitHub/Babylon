@@ -84,8 +84,8 @@ public class GlobalConfig {
     }
 
     @Bean
-    public Util getUtil() {
-        Util util = new Util(recorderEndpointIpAddress, colorGenerator);
+    public Util getUtil(NRITextTranslation nriTextTranslation, NRITextToSpeech nriTextToSpeech) {
+        Util util = new Util(recorderEndpointIpAddress, colorGenerator, nriTextTranslation, nriTextToSpeech);
         Util.setInstance(util);
         return util;
     }

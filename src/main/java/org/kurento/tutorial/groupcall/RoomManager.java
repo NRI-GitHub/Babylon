@@ -24,6 +24,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import com.nri.babylon.config.ColorGenerator;
 import com.nri.babylon.view.model.AudioLogMessage;
+import com.nri.library.text_translation.enums.SupportedLanguage;
 import org.kurento.client.KurentoClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,11 +42,6 @@ public class RoomManager {
   private KurentoClient kurento;
 
   private final ConcurrentMap<String, Room> rooms = new ConcurrentHashMap<>();
-  private boolean stopFakeThread = false;
-
-  public RoomManager() {
-    startUIBackgroundThread();
-  }
 
   /**
    * Looks for a room in the active room list.
@@ -78,46 +74,5 @@ public class RoomManager {
     this.rooms.remove(room.getName());
     room.close();
     log.info("Room {} removed and closed", room.getName());
-  }
-
-
-  private static int fakeCount = 0;
-  private void startUIBackgroundThread() {
-    new Thread(() -> {
-      while (!stopFakeThread){
-        fakeCount++;
-        fakeSleep(2000);
-
-        for (Room room : rooms.values()) {
-          Collection<UserSession> participants = room.getParticipants();
-          for (UserSession participant : participants) {
-            String name = participant.getName();
-            String id = participant.getSession().getId();
-            String userIconColor = participant.getIconColor();
-            String fakeMessage = "fake message from : " + name + " : "+fakeCount;
-
-            AudioLogMessage audioLogMessage = new AudioLogMessage(fakeMessage, id, name, userIconColor);
-
-            try {
-              room.sendAudioLog(audioLogMessage);
-            } catch (IOException e) {
-              throw new RuntimeException(e);
-            }
-
-            fakeSleep(1000);
-          }
-
-        }
-
-      }
-    }).start();
-  }
-
-  private void fakeSleep(int ms) {
-    try {
-      Thread.sleep(ms);
-    } catch (InterruptedException e) {
-      throw new RuntimeException(e);
-    }
   }
 }

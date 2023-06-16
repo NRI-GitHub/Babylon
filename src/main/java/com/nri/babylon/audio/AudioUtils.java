@@ -101,4 +101,34 @@ public class AudioUtils {
 
         return targetFilePath;
     }
+
+    public static void copyFile(String fileName, String newFile) {
+
+        Path sourcePath = Paths.get(fileName);
+        Path destinationPath = Paths.get(newFile);
+        File sourceFile = sourcePath.toFile();
+        if (sourceFile.exists()){
+            System.out.println("File .");
+        }
+
+        try {
+            // Copy the file
+            Files.copy(sourcePath, destinationPath, StandardCopyOption.COPY_ATTRIBUTES);
+            System.out.println("File copied successfully.");
+        } catch (IOException e) {
+            System.out.println("An error occurred while copying the file: " + e.getMessage());
+        }
+    }
+
+    public static void deleteFile(String fileName) {
+        Path filePath = Path.of(fileName);
+
+        try {
+            // Delete the file
+            Files.delete(filePath);
+            System.out.println("File deleted successfully.");
+        } catch (IOException e) {
+            System.out.println("An error occurred while deleting the file: " + e.getMessage());
+        }
+    }
 }

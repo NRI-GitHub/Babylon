@@ -28,6 +28,8 @@ import java.util.concurrent.ConcurrentMap;
 import javax.annotation.PreDestroy;
 
 import com.nri.babylon.view.model.AudioLogMessage;
+import com.nri.library.text_translation.enums.SupportedLanguage;
+import com.nri.library.tts.model.Voice;
 import org.kurento.client.Continuation;
 import org.kurento.client.MediaPipeline;
 import org.slf4j.Logger;
@@ -65,9 +67,9 @@ public class Room implements Closeable {
     this.close();
   }
 
-  public UserSession join(String userName, WebSocketSession session) throws IOException {
+  public UserSession join(String userName, WebSocketSession session, Voice userVoice, SupportedLanguage userLanguage) throws IOException {
     log.info("ROOM {}: adding participant {}", this.name, userName);
-    final UserSession participant = new UserSession(userName, this.name, session, this.pipeline);
+    final UserSession participant = new UserSession(userName, this.name, session, this.pipeline, userVoice, userLanguage);
     joinRoom(participant);
     participants.put(participant.getName(), participant);
     sendParticipantNames(participant);

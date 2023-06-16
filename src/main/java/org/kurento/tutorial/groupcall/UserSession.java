@@ -25,8 +25,11 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import com.nri.babylon.Util;
+import com.nri.babylon.audio.AudioUtils;
 import com.nri.babylon.config.ColorGenerator;
 import com.nri.library.stt.NRISpeechToText;
+import com.nri.library.text_translation.enums.SupportedLanguage;
+import com.nri.library.tts.model.Voice;
 import org.kurento.client.*;
 import org.kurento.jsonrpc.JsonUtils;
 import org.slf4j.Logger;
@@ -57,10 +60,12 @@ public class UserSession implements Closeable {
   private final WebRtcEndpoint outgoingMedia;
   private final ConcurrentMap<String, WebRtcEndpoint> incomingMedia = new ConcurrentHashMap<>();
   private final String iconColor;
+  private final SupportedLanguage nativeLanguage;
+  private final Voice voice;
   private Map<String, PlayerEndpoint> userPlayerEndpoints = new HashMap<>();
 
   public UserSession(final String name, String roomName, final WebSocketSession session,
-      MediaPipeline pipeline) {
+                     MediaPipeline pipeline, Voice voice, SupportedLanguage nativeLanguage) {
 
     this.pipeline = pipeline;
     this.name = name;
@@ -68,6 +73,8 @@ public class UserSession implements Closeable {
     this.roomName = roomName;
     this.outgoingMedia = new WebRtcEndpoint.Builder(pipeline).build();
     this.iconColor = Util.getUniqueHexColor(name);
+    this.nativeLanguage = nativeLanguage;
+    this.voice = voice;
 
     startRecording();
     this.outgoingMedia.addIceCandidateFoundListener(new EventListener<IceCandidateFoundEvent>() {
@@ -88,24 +95,42 @@ public class UserSession implements Closeable {
       }
     });
   }
+  Integer count = 0;
 
   public void startRecording() {
     System.out.println(this.name +" has started recording");
     //Connect to our recording endpoint
+    String ipAddress = Util.recorderEndpointIpAddress();
+    String userNameKey = this.getName();
+    String roomNameKey = this.getRoomName();
+    String fileName = userNameKey + "--" + roomNameKey + ".webm";
     RecorderEndpoint recordMyAudio = new RecorderEndpoint
-            .Builder(pipeline, "http://192.168.50.36:8080/acceptAudio/"+roomName+"/"+ name)
+            .Builder(pipeline, "file:///audio2/"+fileName)
             .withMediaProfile(MediaProfileSpecType.WEBM_AUDIO_ONLY).build();
 
     outgoingMedia.connect(recordMyAudio, MediaType.AUDIO);
     recordMyAudio.record();
+    recordMyAudio.addStoppedListener(new EventListener<StoppedEvent>() {
+      @Override
+      public void onEvent(StoppedEvent event) {
+        count++;
+        if (count >= 7)return;
+
+        String fileName1 = "./audio2/" + fileName;
+        AudioUtils.copyFile(fileName1, "./audio2/"+"testing_" + count+"_" +fileName);
+        //AudioUtils.deleteFile(fileName1);
+        recordMyAudio.record();
+      }
+    });
 
     (new Thread(() -> {
       try {
         System.out.println("I'm Sleeping shhhh");
         Thread.sleep(5000);
         recordMyAudio.stop();
+        System.out.println("I'm Done Sleeping");
       } catch (InterruptedException e) {
-        throw new RuntimeException(e);
+        e.printStackTrace();
       }
     })).start();
   }
@@ -186,7 +211,8 @@ public class UserSession implements Closeable {
     sender.getOutgoingWebRtcPeer().connect(incoming);
 
     if (!userPlayerEndpoints.containsKey(sender.getName())) {
-      PlayerEndpoint receivedAudio = new PlayerEndpoint.Builder(pipeline, "http://192.168.50.36:8080/sendAudio/"+roomName+"/"+ name).build();
+      String ipAddress = Util.recorderEndpointIpAddress();
+      PlayerEndpoint receivedAudio = new PlayerEndpoint.Builder(pipeline, "https://"+ipAddress+"/sendAudio/"+roomName+"/"+ name).build();
       receivedAudio.play();
       receivedAudio.addEndOfStreamListener(event -> receivedAudio.play());
 
@@ -278,6 +304,14 @@ public class UserSession implements Closeable {
         webRtc.addIceCandidate(candidate);
       }
     }
+  }
+
+  public SupportedLanguage getNativeLanguage() {
+    return nativeLanguage;
+  }
+
+  public Voice getVoice() {
+    return voice;
   }
 
   /*
