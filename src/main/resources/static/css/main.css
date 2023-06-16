@@ -1,435 +1,453 @@
 * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f5f5f5;
-  }
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f5f5f5;
+}
 
-  .header {
-    background-color: #4285f4;
-    color: #fff;
-    padding: 20px;
-    text-align: center;
-  }
+.header {
+  background-color: #4285f4;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
 
-  .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 80vh;
-    background-color: #f1f0f0;
-    min-height: 100vh;
-  }
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
+  background-color: #f1f0f0;
+  min-height: 100vh;
+}
 
-  .second-background {
-    width: 90vw;
-    height: 90vh;
-    background-color: #f5f5f5;
-    box-shadow: inset 0px 0px 13px 1px rgba(0, 0, 0, 0.1);
-    display: flex;
-    border-radius: 12px;
-    flex-direction: column;
-  }
+.second-background {
+  width: 90vw;
+  height: 90vh;
+  background-color: #f5f5f5;
+  box-shadow: inset 0px 0px 13px 1px rgba(0, 0, 0, 0.1);
+  display: flex;
+  border-radius: 12px;
+  flex-direction: column;
+}
 
-  .main-video {
-    width: 65vw;
-    height: 60vh;
-    background-color: #f5f5f5;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    border-radius: 12px;
-    flex-direction: column;
-  }
-  .contain {
-    position: relative;
-    display: flex;
-    padding-top: 4vh;
-    padding-left: 2vw; gap: 20px;
-  }
-  
-  .background-image {
-    position: relative;
-    z-index: 1;
-    width: 60vw;
-    height: 65vh;
-    background-color: #f5f5f5;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    border-radius: 12px;
-    flex-direction: column;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-  }
-  
-  .call-image {
-    position: absolute;
-    top: 6vh;
-    right: 29vw;
-    z-index: 2;
-    box-shadow: rgba(0, 0, 0, 0.1) -9px 9px 11px 5px;
-    width: 19vw;
-    border-radius: 12px;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-  }
-  
-  .call-bar {
-    position: absolute;
-    top: 59vh;
-    left: 21vw;
-    width: 25vw;
-    height: 7vh;
-    align-items: center;
-    display: flex;
-    background-color: rgba(0, 0, 0, 0.6);
-    padding: 10px;
-    box-sizing: border-box;
-    z-index: 3;
-    border-radius: 12px;
-    justify-content: center;
-    gap: 1vw;
-  }
-  
-  .end-call-button,
-  .camera-button,
-  .microphone-button {
-    margin-right: 10px;
-    padding: 8px 12px;
-    border: none;
-    color: #000;
-    border-radius: 4px;
-    width: 100px;
-  }
-  
-  .end-call-button:hover,
-  .camera-button:hover,
-  .microphone-button:hover {
-    background-color: #eaeaea;
-    box-shadow: inset 0px 0px 13px 1px rgba(0, 0, 0, 0.1);
-  }
+.main-video {
+  width: 65vw;
+  height: 60vh;
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  border-radius: 12px;
+  flex-direction: column;
+}
+.contain {
+  position: relative;
+  display: flex;
+  padding-top: 4vh;
+  padding-left: 2vw;
+  gap: 20px;
+}
 
-  .rounded-camera-button-on {
-    width: 3vw;
-    height: 6vh;
-    background: #06060654;
-    color: white;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border-radius: 50%;
-    border: none;
-    text-decoration: none;
-    transition: background 0.2s;
-  }
+.background-image {
+  position: relative;
+  z-index: 1;
+  width: 60vw;
+  height: 65vh;
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  border-radius: 12px;
+  flex-direction: column;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
 
-  .rounded-camera-button-off {
-    width: 3vw;
-    height: 6vh;
-    background: red;
-    color: white;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border-radius: 50%;
-    border: none;
-    text-decoration: none;
-    transition: background 0.2s;
-  }
+.call-image {
+  position: absolute;
+  top: 6vh;
+  right: 29vw;
+  z-index: 2;
+  box-shadow: rgba(0, 0, 0, 0.1) -9px 9px 11px 5px;
+  width: 19vw;
+  border-radius: 12px;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}
 
-  .rounded-mic-button-on {
-    width: 3vw;
-    height: 6vh;
-    background: #06060654;
-    color: white;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border-radius: 50%;
-    border: none;
-    text-decoration: none;
-    transition: background 0.2s;
-  }
+.call-bar {
+  position: absolute;
+  top: 59vh;
+  left: 21vw;
+  width: 25vw;
+  height: 7vh;
+  align-items: center;
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 10px;
+  box-sizing: border-box;
+  z-index: 3;
+  border-radius: 12px;
+  justify-content: center;
+  gap: 1vw;
+}
 
-  .rounded-mic-button-off {
-    width: 3vw;
-    height: 6vh;
-    background: red;
-    color: white;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border-radius: 50%;
-    border: none;
-    text-decoration: none;
-    transition: background 0.2s;
-  }
+.end-call-button,
+.camera-button,
+.microphone-button {
+  margin-right: 10px;
+  padding: 8px 12px;
+  border: none;
+  color: #000;
+  border-radius: 4px;
+  width: 100px;
+}
 
-  .rounded-phone-button {
-    width: 3vw;
-    height: 6vh;
-    background: red;
-    color: white;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border-radius: 50%;
-    border: none;
-    text-decoration: none;
-    transition: background 0.2s;
-  }
+.end-call-button:hover,
+.camera-button:hover,
+.microphone-button:hover {
+  background-color: #eaeaea;
+  box-shadow: inset 0px 0px 13px 1px rgba(0, 0, 0, 0.1);
+}
 
-  .rounded-settings-button {
-    width: 3vw;
-    height: 6vh;
-    background: #06060654;
-    color: white;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    border-radius: 50%;
-    border: none;
-    text-decoration: none;
-    transition: background 0.2s;
-  }
+.rounded-camera-button-on {
+  width: 3vw;
+  height: 6vh;
+  background: #06060654;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  border: none;
+  text-decoration: none;
+  transition: background 0.2s;
+}
 
-  .rounded-camera-button-on:hover,
-  .rounded-mic-button-on:hover,
-  .rounded-camera-button-off:hover,
-  .rounded-mic-button-off:hover {
-    box-shadow: inset 0px 0px 10px 8px rgba(0, 0, 0, 0.1)    
-  }
-  
-  .topCameraIcon {
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    padding: 31px;
-  }
+.rounded-camera-button-off {
+  width: 3vw;
+  height: 6vh;
+  background: red;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  border: none;
+  text-decoration: none;
+  transition: background 0.2s;
+}
 
-  #chat-box {
-     width: 26vw;
-    height: 48vh;
-    overflow: hidden;
-  }
-  
-  #chat-messages {
-    height: 80%;
-    padding: 10px;
-    overflow-y: auto;
-  }
-  
-  #chat-input {
-    height: 20%;
-    display: flex;
-    align-items: center;
-    padding: 10px;
-  }
+.rounded-mic-button-on {
+  width: 3vw;
+  height: 6vh;
+  background: #06060654;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  border: none;
+  text-decoration: none;
+  transition: background 0.2s;
+}
 
-  .person-picture {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px;
-      height: 36px;
-      background-color: #a900ff; /* Set your desired color here */
-      border-radius: 50%; /* Make it a circle */
-      color: #FFF;
-      font-size: 18px;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
-    .person-picture:first-child {
-      background-color: #FFA500; /* Set color for the first person */
-    }
+.rounded-mic-button-off {
+  width: 3vw;
+  height: 6vh;
+  background: red;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  border: none;
+  text-decoration: none;
+  transition: background 0.2s;
+}
 
-    .person-picture:second-child {
-      background-color: #00BFFF; /* Set color for the second person */
-    }
-  
-  #message-input {
-    flex: 1;
-    padding: 5px;
-  }
-  
-  #send-button {
-    margin-left: 10px;
-  }
+.rounded-phone-button {
+  width: 3vw;
+  height: 6vh;
+  background: red;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  border: none;
+  text-decoration: none;
+  transition: background 0.2s;
+}
 
-  .audio-log {
-    margin-top: 20px;
-  }
+.rounded-settings-button {
+  width: 3vw;
+  height: 6vh;
+  background: #06060654;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  border: none;
+  text-decoration: none;
+  transition: background 0.2s;
+}
 
-  .log-entry {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    
-  }
+.rounded-camera-button-on:hover,
+.rounded-mic-button-on:hover,
+.rounded-camera-button-off:hover,
+.rounded-mic-button-off:hover {
+  box-shadow: inset 0px 0px 10px 8px rgba(0, 0, 0, 0.1);
+}
 
-  .person-picture {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
+.topCameraIcon {
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  padding: 31px;
+}
 
-  .log-content {
-    flex-grow: 1;
-    border: 1px solid #ccc;
-    padding: 10px;
-    border-radius: 5px;
-    max-width: 400px;
-  }
+#chat-box {
+  width: 26vw;
+  height: 58vh;
+  overflow-y: auto;
+}
 
-  .toggle-switch {
-    display: inline-block;
-    position: relative;
-    width: 80px;
-    height: 40px;
-    background-color: #ccc;
-    border-radius: 20px;
-    overflow: hidden;
-    cursor: pointer;
-  }
+#chat-box::-webkit-scrollbar {
+  width: 12px; /* Width of the scrollbar */
+}
 
-  .button-box {
-    width: 220px;
-    margin: 35px auto;
-    position: relative;
-    display: flex;
-    border-radius: 30px;
-    background: #fff;
-  }
-  
-  .toggle-btn {
-    padding: 15px 13px;
-    cursor: pointer;
-    background: transparent;
-    border: 0;
-    outline: none;
-    width: 112px;
-    position: relative;
-    text-align: center;
-    color: #000;
-    transition: color 0.3s;
-  }
+#chat-box::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Background color of the scrollbar track */
+}
 
-  #btn {
-    left: 0;
-    top: 0;
-    position: absolute;
-    width: 110px;
-    height: 100%;
-    background: #006eff;
-    border-radius: 30px;
-    transition: .5s;
-    background: #006eff;
-    transition: .5s;
-  }
-  
-  .flag-container {
-    position: relative;
-    width: 100px;
-    height: 50px;
-  }
-  
-  .flag-container {
-    width: 200px;
-    height: 100px;
-    position: relative;
-  }
-  
-  .flag-us {
-    width: 50%;
-    height: 100%;
-    background-image: url('us-flag.png');
-    background-size: cover;
-    float: left;
-  }
-  
-  .flag-france {
-    width: 50%;
-    height: 100%;
-    background-image: url('france-flag.png');
-    background-size: cover;
-    float: right;
-  }
-  .audio-log-title {
-    display: flex;
-    font-family: sans-serif;
-    padding-top: 2vh;
-    padding: 15px;
-    border-bottom: inset;
-    justify-content: center;
-  }
+#chat-box::-webkit-scrollbar-thumb {
+  background-color: #888; /* Color of the scrollbar thumb */
+  border-radius: 6px; /* Border radius of the scrollbar thumb */
+}
 
-  .top-meeting-section {
-    border-bottom-style: inset; 
-    display: flex; 
-    align-items: center;
-  }
+#chat-box::-webkit-scrollbar-thumb:hover {
+  background-color: #555; /* Color of the scrollbar thumb on hover */
+}
 
-  .meeting-title {
-    font-size: large; font-family: sans-serif;
-  }
+#chat-messages {
+  height: 80%;
+  padding: 10px;
+  overflow-y: auto;
+}
 
-  .flag-bar {
-    position: absolute;
-    top: 6vh;
-    left: 3vw;
-    width: 3vw;
-    height: 4vh;
-    align-items: center;
-    display: flex;
-    background-color: rgba(0, 0, 0, 0.6);
-    z-index: 3;
-    border-radius: 9px;
-    justify-content: center;
-  }
+#chat-input {
+  height: 20%;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+}
 
-  .flag {
-    width: 2vw;
-  }
+.person-picture {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  background-color: #a900ff; /* Set your desired color here */
+  border-radius: 50%; /* Make it a circle */
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+.person-picture:first-child {
+  background-color: #ffa500; /* Set color for the first person */
+}
 
-  .participant video {
-      position: absolute;
-          top: 1vh;
-          right: 1vw;
-          z-index: 2;
-          box-shadow: rgba(0, 0, 0, 0.1) -9px 9px 11px 5px;
-          width: 15vw;
-          border-radius: 12px;
-      object-fit: cover;
-  }
+.person-picture:second-child {
+  background-color: #00bfff; /* Set color for the second person */
+}
 
-  .participant.main video {
-    position: relative;
-    left:0vw;
-    z-index: 1;
-    width: 60vw;
-    height: 65vh;
-    background-color: #f5f5f5;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    display: flex;
-    border-radius: 12px;
-    flex-direction: column;
-    user-select: none;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-  }
+#message-input {
+  flex: 1;
+  padding: 5px;
+}
+
+#send-button {
+  margin-left: 10px;
+}
+
+.audio-log {
+  margin-top: 20px;
+}
+
+.log-entry {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.person-picture {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.log-content {
+  flex-grow: 1;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+  max-width: 400px;
+}
+
+.toggle-switch {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 40px;
+  background-color: #ccc;
+  border-radius: 20px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.button-box {
+  width: 220px;
+  margin: 35px auto;
+  position: relative;
+  display: flex;
+  border-radius: 30px;
+  background: #fff;
+}
+
+.toggle-btn {
+  padding: 15px 13px;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  outline: none;
+  width: 112px;
+  position: relative;
+  text-align: center;
+  color: #000;
+  transition: color 0.3s;
+}
+
+#btn {
+  left: 0;
+  top: 0;
+  position: absolute;
+  width: 110px;
+  height: 100%;
+  background: #006eff;
+  border-radius: 30px;
+  transition: 0.5s;
+  background: #006eff;
+  transition: 0.5s;
+}
+
+.flag-container {
+  position: relative;
+  width: 100px;
+  height: 50px;
+}
+
+.flag-container {
+  width: 200px;
+  height: 100px;
+  position: relative;
+}
+
+.flag-us {
+  width: 50%;
+  height: 100%;
+  background-image: url("us-flag.png");
+  background-size: cover;
+  float: left;
+}
+
+.flag-france {
+  width: 50%;
+  height: 100%;
+  background-image: url("france-flag.png");
+  background-size: cover;
+  float: right;
+}
+.audio-log-title {
+  display: flex;
+  font-family: sans-serif;
+  padding-top: 2vh;
+  padding: 15px;
+  border-bottom: inset;
+  justify-content: center;
+}
+
+.top-meeting-section {
+  border-bottom-style: inset;
+  display: flex;
+  align-items: center;
+}
+
+.meeting-title {
+  font-size: large;
+  font-family: sans-serif;
+}
+
+.flag-bar {
+  position: absolute;
+  top: 6vh;
+  left: 3vw;
+  width: 3vw;
+  height: 4vh;
+  align-items: center;
+  display: flex;
+  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 3;
+  border-radius: 9px;
+  justify-content: center;
+}
+
+.flag {
+  width: 2vw;
+}
+
+.participant video {
+  position: absolute;
+  top: 1vh;
+  right: 1vw;
+  z-index: 2;
+  box-shadow: rgba(0, 0, 0, 0.1) -9px 9px 11px 5px;
+  width: 15vw;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.participant.main video {
+  position: relative;
+  left: 0vw;
+  z-index: 1;
+  width: 60vw;
+  height: 65vh;
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  border-radius: 12px;
+  flex-direction: column;
+  user-select: none;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+}

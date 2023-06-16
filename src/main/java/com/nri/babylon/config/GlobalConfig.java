@@ -1,11 +1,5 @@
 package com.nri.babylon.config;
 
-import com.nri.babylon.Util;
-import com.nri.babylon.audio.NriAudioCodec;
-import com.nri.babylon.testing.TestLibs;
-import com.nri.library.stt.NRISpeechToText;
-import com.nri.library.text_translation.NRITextTranslation;
-import com.nri.library.tts.NRITextToSpeech;
 import org.kurento.client.KurentoClient;
 import org.kurento.tutorial.groupcall.CallHandler;
 import org.kurento.tutorial.groupcall.RoomManager;
@@ -15,6 +9,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.server.standard.ServletServerContainerFactoryBean;
+
+import com.nri.babylon.Util;
+import com.nri.babylon.audio.NriAudioCodec;
+import com.nri.babylon.testing.TestLibs;
+import com.nri.library.stt.NRISpeechToText;
+import com.nri.library.text_translation.NRITextTranslation;
+import com.nri.library.tts.NRITextToSpeech;
 
 @Configuration
 public class GlobalConfig {

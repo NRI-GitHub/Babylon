@@ -3,136 +3,78 @@
   <head>
     <title>Babylon Meet</title>
     <link rel="stylesheet" href="/css/main.css">
-    <input type="hidden" id="myName" th:if="${myName != null}" th:value="${myName}" />
-    <input type="hidden" id="myRoomName" th:if="${myRoomName != null}" th:value="${myRoomName}" />
-    <input type="hidden" id="myVoice" th:if="${myVoice != null}" th:value="${myVoice}" />
-    <input type="hidden" id="myLanguage" th:if="${myLanguage != null}" th:value="${myLanguage}" />
+    <input type="hidden" id="myName" th:if="${myName != null}"
+      th:value="${myName}" />
+    <input type="hidden" id="myRoomName" th:if="${myRoomName != null}"
+      th:value="${myRoomName}" />
+    <input type="hidden" id="myVoice" th:if="${myVoice != null}"
+      th:value="${myVoice}" />
+    <input type="hidden" id="myLanguage" th:if="${myLanguage != null}"
+      th:value="${myLanguage}" />
 
     <script src="/webjars/webrtc-adapter/release/adapter.js"></script>
     <script src="./js/conference-room.js"></script>
     <script src="./js/participant.js"></script>
     <script src="./js/kurento-utils.js"></script>
 
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
   </head>
   <body>
+    <div id="join"></div>
     <div class="container">
-      <div class="second-background">
+      <div id="room" class="second-background">
         <div class="top-meeting-section">
-          <img src="/images/icons8-camera-64.png" class="topCameraIcon" draggable="false">
-          <h1 class="meeting-title">Status Update Meeting | Réunion pour faire le point</h1>
+          <img src="/images/icons8-camera-64.png" class="topCameraIcon"
+            draggable="false">
+          <h1 class="meeting-title">Status Update Meeting | Réunion pour faire
+            le point</h1>
+          <div id="room-header" style="display:none;"></div>
         </div>
         <div class="contain">
-          <div id="participants" alt="FaceTime background image" class="background-image" draggable="false"></div>
-            <div class="flag-bar">
-              <img class="flag" src="/images/american flag.png" alt="">
-            </div>
+          <div id="participants" alt="FaceTime background image"
+            class="background-image" draggable="false"></div>
+          <div class="flag-bar">
+            <img class="flag" src="/images/american flag.png" alt>
+          </div>
           <div class="call-bar">
             <button title="Settings" class="rounded-settings-button">
               <ion-icon name="ellipsis-vertical" size="large"></ion-icon>
             </button>
-            <button title="Turn Camera Off" id="cameraButton" class="rounded-camera-button-on" type="button" onclick="toggleCamera()">
+            <button title="Turn Camera Off" id="cameraButton"
+              class="rounded-camera-button-on" type="button"
+              onclick="toggleCamera()">
               <ion-icon name="videocam" size="large"></ion-icon>
             </button>
-            <button title="Turn Microphone Off" id="micButton" class="rounded-mic-button-on" type="button"
-              onclick="autoRegister()">
+            <button title="Turn Microphone Off" id="micButton"
+              class="rounded-mic-button-on" type="button"
+              onclick="toggleMic()">
               <ion-icon name="mic" size="large"></ion-icon>
             </button>
-            <button title="End Call" id="endCallButton" class="rounded-phone-button"
+            <button title="End Call" id="endCallButton"
+              class="rounded-phone-button"
               type="button" onclick="leaveRoom()">
               <ion-icon name="call" size="large"></ion-icon>
             </button>
           </div>
-            <div>
-              <h2 class="audio-log-title">Audio Logs</h2>
-              <div class="form-box">
+          <div>
+            <h2 class="audio-log-title">Audio Logs</h2>
+            <!-- <div class="form-box">
                 <div class="button-box">
                   <div id="btn"></div>
                   <button id="translatedBtn" title="Translated Audio Logs" type="button" class="toggle-btn" onclick="leftClick()">Translated</button>
                   <button id="nativeBtn" title="Native Audio Logs" type="button" class="toggle-btn" onclick="rightClick()">Native</button>
                 </div>
-              </div>
-              <div id="chat-box"></div>
-              <!-- <div class="audio-log">
-                <div class="log-entry">
-                  <img src="/images/stock image.webp" alt="Person 1" class="person-picture">
-                  <div class="log-content">
-                    <p>Good morning Tyler! Let's dive into the data.</p>
-                  </div>
-                </div>
-
-                <div class="log-entry">
-                  <img src="/images/stock image 2.webp" alt="Person 2" class="person-picture">
-                  <div class="log-content">
-                    <p>Good morning! I'm excited to discuss the latest trends and insights. Can we start with the sales figures?</p>
-                  </div>
-                </div>
-
-                <div class="log-entry">
-                  <img src="/images/stock image.webp" alt="Person 3" class="person-picture">
-                  <div class="log-content">
-                    <p>Absolutely! Our sales have been steadily increasing over the past quarter. We've seen a 10% growth compared to the same period last year.</p>
-                  </div>
-                </div>
               </div> -->
-            </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TODO Test do not use me -->
-    <!-- TODO delete me -->
-    <div>
-      <div>
-        <div id="wrapper">
-          <div id="join" class="animate join">
-            <h1>Join a Room</h1>
-            <form onsubmit="register(); return false;" accept-charset="UTF-8">
-              <p>
-                <input type="text" name="name" value="" id="name"
-                       placeholder="Username" required>
-              </p>
-              <p>
-                <input type="text" name="room" value="" id="roomName"
-                       placeholder="Room" required>
-              </p>
-              <p>
-              <div class="input-group">
-                <label for="voice">Select a voice</label>
-                <select id="voice">
-                  <option th:each="voice : ${voices}" th:value="${voice.id}" th:text="${voice.name}"></option>
-                </select>
-              </div>
-              </p>
-
-              <p>
-              <div class="input-group">
-                <label for="language">Select a language</label>
-                <select id="language">
-                  <option th:each="language : ${languages}" th:value="${language.id}" th:text="${language.planText}"></option>
-                </select>
-              </div>
-              </p>
-
-              <p class="submit">
-                <input type="submit" name="commit" value="Join!">
-              </p>
-            </form>
-          </div>
-          <div id="room" style="display: none;">
-            <h2 id="room-header"></h2>
-            <div id="participants"></div>
-            <input type="button" id="button-leave" onmouseup="leaveRoom();"
-                   value="Leave room">
+            <div id="chat-box"></div>
           </div>
         </div>
       </div>
 
     </div>
-    <!-- Test do not use me -->
-
     <script src="/js/main.js"></script>
   </body>
 </html>
