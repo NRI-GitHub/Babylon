@@ -85,7 +85,7 @@ body {
 .call-bar {
   position: absolute;
   top: 59vh;
-  left: 21vw;
+  left: 20vw;
   width: 25vw;
   height: 7vh;
   align-items: center;
@@ -118,8 +118,8 @@ body {
 }
 
 .rounded-camera-button-on {
-  width: 3vw;
-  height: 6vh;
+  width: 50px;
+  height: 50px;
   background: #06060654;
   color: white;
   display: inline-flex;
@@ -133,8 +133,8 @@ body {
 }
 
 .rounded-camera-button-off {
-  width: 3vw;
-  height: 6vh;
+  width: 50px;
+  height: 50px;
   background: red;
   color: white;
   display: inline-flex;
@@ -148,8 +148,8 @@ body {
 }
 
 .rounded-mic-button-on {
-  width: 3vw;
-  height: 6vh;
+  width: 50px;
+  height: 50px;
   background: #06060654;
   color: white;
   display: inline-flex;
@@ -163,8 +163,8 @@ body {
 }
 
 .rounded-mic-button-off {
-  width: 3vw;
-  height: 6vh;
+  width: 50px;
+  height: 50px;
   background: red;
   color: white;
   display: inline-flex;
@@ -178,8 +178,10 @@ body {
 }
 
 .rounded-phone-button {
-  width: 3vw;
-  height: 6vh;
+  /*width: 3vw;
+  height: 6vh;*/
+  width: 50px;
+  height: 50px;
   background: red;
   color: white;
   display: inline-flex;
@@ -193,8 +195,8 @@ body {
 }
 
 .rounded-settings-button {
-  width: 3vw;
-  height: 6vh;
+  width: 50px;
+  height: 50px;
   background: #06060654;
   color: white;
   display: inline-flex;
@@ -262,22 +264,25 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  background-color: #a900ff; /* Set your desired color here */
-  border-radius: 50%; /* Make it a circle */
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
   color: #fff;
   font-size: 18px;
   font-weight: bold;
   text-transform: uppercase;
 }
+
+/*
 .person-picture:first-child {
-  background-color: #ffa500; /* Set color for the first person */
+  background-color: #ffa500;
 }
 
 .person-picture:second-child {
-  background-color: #00bfff; /* Set color for the second person */
+  background-color: #00bfff;
 }
+*/
 
 #message-input {
   flex: 1;
@@ -298,19 +303,12 @@ body {
   margin-bottom: 10px;
 }
 
-.person-picture {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  margin-right: 10px;
-}
-
 .log-content {
   flex-grow: 1;
   border: 1px solid #ccc;
   padding: 10px;
   border-radius: 5px;
-  max-width: 400px;
+  width: 5vw;
 }
 
 .toggle-switch {
@@ -426,7 +424,7 @@ body {
 
 .participant video {
   position: absolute;
-  top: 1vh;
+  top: 0vh;
   right: 1vw;
   z-index: 2;
   box-shadow: rgba(0, 0, 0, 0.1) -9px 9px 11px 5px;
