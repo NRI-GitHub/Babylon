@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import com.nri.babylon.audio.NriAudioCodec;
 import com.nri.babylon.config.ColorGenerator;
 import com.nri.babylon.view.model.AudioLogMessage;
 import com.nri.library.text_translation.enums.SupportedLanguage;
@@ -41,6 +42,9 @@ public class RoomManager {
   @Autowired
   private KurentoClient kurento;
 
+  @Autowired
+  private NriAudioCodec nriAudioCodec;
+
   private final ConcurrentMap<String, Room> rooms = new ConcurrentHashMap<>();
 
   /**
@@ -57,7 +61,7 @@ public class RoomManager {
 
     if (room == null) {
       log.debug("Room {} not existent. Will create now!", roomName);
-      room = new Room(roomName, kurento.createMediaPipeline());
+      room = new Room(roomName, kurento.createMediaPipeline(), nriAudioCodec);
       rooms.put(roomName, room);
     }
     log.debug("Room {} found!", roomName);

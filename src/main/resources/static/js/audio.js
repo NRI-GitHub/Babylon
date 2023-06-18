@@ -31,7 +31,7 @@ function start() {
         this.generateOffer(onOffer);
     });
 
-    ws = new WebSocket('ws://' + location.host + '/websocket');
+    ws = new WebSocket('wss://' + location.host + '/websocket');
     ws.onmessage = function(message) {
         var parsedMessage = JSON.parse(message.data);
         console.info('Received message: ' + message.data);

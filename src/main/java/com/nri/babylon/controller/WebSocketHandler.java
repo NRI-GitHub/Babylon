@@ -254,7 +254,7 @@ public class WebSocketHandler extends TextWebSocketHandler {
         String sessionId = session.getId();
         log.info("[Handler::handleStart] User count: {}", users.size());
         log.info("[Handler::handleStart] New user, id: {}", sessionId);
-        UserSession user = new UserSession(null, null, null, null, null, null);
+        UserSession user = new UserSession(null, null, null, null, null, null, null);
         users.put(sessionId, user);
 
         // ---- Media pipeline

@@ -1,5 +1,6 @@
 package com.nri.babylon.controller;
 
+import com.nri.babylon.audio.AudioUtils;
 import com.nri.babylon.audio.NriAudioCodec;
 import com.nri.library.text_translation.enums.SupportedLanguage;
 import jakarta.servlet.http.HttpServletRequest;
@@ -41,7 +42,7 @@ public class AudioController {
         System.out.println("[Controller::sendAudio] userName : " + userName);
 
         UserSession userSession = roomManager.getRoom(roomName).getParticipant(userName);
-        if(userSession == null) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        if (userSession == null) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         System.out.println("[Controller::sendAudio] userSession.getName() : " + userSession.getName());
         String[] translatedAudio = new String[1];
         Object syncObject = new Object();
@@ -63,9 +64,10 @@ public class AudioController {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
-        if(translatedAudio[0] == null || translatedAudio[0].isEmpty() || translatedAudio[0].isBlank()) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        if (translatedAudio[0] == null || translatedAudio[0].isEmpty() || translatedAudio[0].isBlank())
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
-        System.out.println("[Controller::sendAudio] The File: " +translatedAudio[0]);
+        System.out.println("[Controller::sendAudio] The File: " + translatedAudio[0]);
         File file = new File(translatedAudio[0]);
 
         if (file.exists()) {
@@ -87,7 +89,7 @@ public class AudioController {
         }
     }
 
-    @PostMapping("/acceptAudio/{roomName}/{userName}")
+    @PostMapping("/acceptAudio33/{roomName}/{userName}")
     public ResponseEntity<String> upload(HttpServletRequest request,
                                          @PathVariable("roomName") String roomName,
                                          @PathVariable("userName") String userName) {
@@ -96,26 +98,15 @@ public class AudioController {
         Room room = roomManager.getRoom(roomName);
         UserSession userSession = room.getParticipant(userName);
         System.out.println("[Controller::sendAudio] userSession.getName() : " + userSession.getName());
-        String filePath = null;
-        if(userSession == null) return new ResponseEntity<>(HttpStatus.NO_CONTENT);;
+        if (userSession == null) return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
+
+        File audioFile;
         try {
             // Read the input stream from the request
             InputStream inputStream = request.getInputStream();
 
-            // Specify the file path to save the audio
-            String fileName = UUID.randomUUID() + "_" +userName;
-            filePath = UPLOADED_FOLDER + fileName + ".webm";
-            File file = new File(filePath);
-
-            try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
-                byte[] buffer = new byte[1024];
-                int bytesRead;
-                while ((bytesRead = inputStream.read(buffer)) != -1) {
-                    fileOutputStream.write(buffer, 0, bytesRead);
-                }
-            }
-
+            audioFile = saveInputAudio(inputStream, userName);
         } catch (SocketException e) {
             // Handle connection reset
             System.err.println("Client aborted the connection: " + e.getMessage());
@@ -123,24 +114,36 @@ public class AudioController {
         } catch (IOException e) {
             e.printStackTrace();
             return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        } finally {
-            SupportedLanguage nativeLanguage = userSession.getNativeLanguage();
-            SupportedLanguage translateInto = getOtherPartyNativeLanguage(room, userSession);
-            nriAudioCodec.createAudioThread(filePath, room, userSession, nativeLanguage, translateInto);
-            userSession.startRecording();
         }
+
+
+        onAudioSavedSuccessfully(audioFile, room, userSession);
+        userSession.startRecording(0);
         System.out.println("[Controller::acceptAudio] Done Receiving audio");
         return new ResponseEntity<>("Audio saved successfully!", HttpStatus.OK);
     }
 
-    private SupportedLanguage getOtherPartyNativeLanguage(Room room, UserSession userSpeakerPerson) {
-        Collection<UserSession> participants = room.getParticipants();
-        for (UserSession listeningPerson : participants) {
-            if (listeningPerson.equals(userSpeakerPerson))
-                continue;
+    private File saveInputAudio(InputStream inputStream, String userName) throws IOException {
+        // Specify the file path to save the audio
+        String fileName = UUID.randomUUID() + "_" + userName;
+        String filePath = UPLOADED_FOLDER + fileName + ".webm";
+        File file = new File(filePath);
 
-            return listeningPerson.getNativeLanguage();
+        FileOutputStream fileOutputStream = new FileOutputStream(file);
+        byte[] buffer = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = inputStream.read(buffer)) != -1) {
+            fileOutputStream.write(buffer, 0, bytesRead);
         }
-        return null;
+
+        return file;
     }
+
+    public void onAudioSavedSuccessfully(File audioFile, Room room, UserSession userSession) {
+        SupportedLanguage nativeLanguage = userSession.getNativeLanguage();
+        SupportedLanguage translateInto = AudioUtils.getOtherPartyNativeLanguage(room, userSession);
+        nriAudioCodec.createAudioThread(audioFile.getAbsolutePath(), room, userSession, nativeLanguage, translateInto);
+    }
+
+
 }

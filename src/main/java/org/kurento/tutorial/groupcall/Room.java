@@ -27,6 +27,7 @@ import java.util.concurrent.ConcurrentMap;
 
 import javax.annotation.PreDestroy;
 
+import com.nri.babylon.audio.NriAudioCodec;
 import com.nri.babylon.view.model.AudioLogMessage;
 import com.nri.library.text_translation.enums.SupportedLanguage;
 import com.nri.library.tts.model.Voice;
@@ -51,14 +52,16 @@ public class Room implements Closeable {
   private final ConcurrentMap<String, UserSession> participants = new ConcurrentHashMap<>();
   private final MediaPipeline pipeline;
   private final String name;
+  private final NriAudioCodec nriAudioCodec;
 
   public String getName() {
     return name;
   }
 
-  public Room(String roomName, MediaPipeline pipeline) {
+  public Room(String roomName, MediaPipeline pipeline, NriAudioCodec nriAudioCodec) {
     this.name = roomName;
     this.pipeline = pipeline;
+    this.nriAudioCodec = nriAudioCodec;
     log.info("ROOM {} has been created", roomName);
   }
 
@@ -69,7 +72,7 @@ public class Room implements Closeable {
 
   public UserSession join(String userName, WebSocketSession session, Voice userVoice, SupportedLanguage userLanguage) throws IOException {
     log.info("ROOM {}: adding participant {}", this.name, userName);
-    final UserSession participant = new UserSession(userName, this.name, session, this.pipeline, userVoice, userLanguage);
+    final UserSession participant = new UserSession(userName, this, session, this.pipeline, userVoice, userLanguage, nriAudioCodec);
     joinRoom(participant);
     participants.put(participant.getName(), participant);
     sendParticipantNames(participant);

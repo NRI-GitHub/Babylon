@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ws.schild.jave.EncoderException;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -54,7 +55,11 @@ public class AudioThread extends Thread implements OnSpeechToTextListener{
     }
     public void run() {
         try {
-            String convertedFile = AudioUtils.convertToMp3(audioFile);
+            File file = new File(audioFile);
+
+            log("audio file : " + audioFile);
+            log("audio file exists : " + file.exists());
+            String convertedFile = AudioUtils.convertToWav(audioFile);
 
             synchronized (nriSpeechToText) {
                 nriSpeechToText.setOnSpeechToTextListener(this);
@@ -70,7 +75,8 @@ public class AudioThread extends Thread implements OnSpeechToTextListener{
             }
 
         } catch (InterruptedException | EncoderException | IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            //throw new RuntimeException(e);
         }
     }
 
@@ -96,6 +102,7 @@ public class AudioThread extends Thread implements OnSpeechToTextListener{
 
             synchronized (nriTextTranslation) {
                 translatedText = nriTextTranslation.translateText(orgText, fromLanguage, toLanguage);//locking
+                notifyEveryoneInTheRoomOfMySpokenText(translatedText, fromLanguage, user);
             }
 
             log("speakSaveToFileText : " + translatedText);
@@ -121,6 +128,12 @@ public class AudioThread extends Thread implements OnSpeechToTextListener{
             }
 
             listener.onOutgoingAudio(playbackFile, user.getName(), room.getName());
+
+            for (UserSession participant : room.getParticipants()) {
+
+                user.playNewAudio(new File(playbackFile), participant);
+            }
+
         } catch (Exception e) {
             log("speakSaveToFileText : Exception");
 
