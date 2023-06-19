@@ -1,10 +1,9 @@
 package com.nri.babylon.config;
 
-import com.nri.babylon.controller.ProxyWebSocketHandler;
 import org.kurento.client.KurentoClient;
-import org.kurento.tutorial.groupcall.CallHandler;
-import org.kurento.tutorial.groupcall.RoomManager;
-import org.kurento.tutorial.groupcall.UserRegistry;
+import com.nri.babylon.kurento.CallHandler;
+import com.nri.babylon.kurento.RoomManager;
+import com.nri.babylon.kurento.UserRegistry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

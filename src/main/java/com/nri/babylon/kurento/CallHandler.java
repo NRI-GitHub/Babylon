@@ -15,7 +15,7 @@
  *
  */
 
-package org.kurento.tutorial.groupcall;
+package com.nri.babylon.kurento;
 
 import java.io.IOException;
 

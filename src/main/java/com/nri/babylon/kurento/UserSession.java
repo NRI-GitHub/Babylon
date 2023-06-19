@@ -15,7 +15,7 @@
  *
  */
 
-package org.kurento.tutorial.groupcall;
+package com.nri.babylon.kurento;
 
 import java.io.Closeable;
 import java.io.File;
@@ -27,7 +27,6 @@ import java.util.concurrent.ConcurrentMap;
 
 import com.nri.babylon.Util;
 import com.nri.babylon.audio.*;
-import com.nri.babylon.config.ColorGenerator;
 import com.nri.library.stt.NRISpeechToText;
 import com.nri.library.text_translation.enums.SupportedLanguage;
 import com.nri.library.tts.model.Voice;
@@ -35,8 +34,6 @@ import org.kurento.client.*;
 import org.kurento.jsonrpc.JsonUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 

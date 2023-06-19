@@ -15,26 +15,17 @@
  *
  */
 
-package org.kurento.tutorial.groupcall;
+package com.nri.babylon.kurento;
 
-import java.io.IOException;
-import java.util.Collection;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import com.nri.babylon.audio.NriAudioCodec;
-import com.nri.babylon.config.ColorGenerator;
-import com.nri.babylon.view.model.AudioLogMessage;
-import com.nri.library.text_translation.enums.SupportedLanguage;
 import org.kurento.client.KurentoClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- * @author Ivan Gracia (izanmail@gmail.com)
- * @since 4.3.1
- */
 public class RoomManager {
 
   private final Logger log = LoggerFactory.getLogger(RoomManager.class);

@@ -1,8 +1,8 @@
 package com.nri.babylon.audio;
 
 import com.nri.library.text_translation.enums.SupportedLanguage;
-import org.kurento.tutorial.groupcall.Room;
-import org.kurento.tutorial.groupcall.UserSession;
+import com.nri.babylon.kurento.Room;
+import com.nri.babylon.kurento.UserSession;
 import ws.schild.jave.Encoder;
 import ws.schild.jave.EncoderException;
 import ws.schild.jave.MultimediaObject;

@@ -2,13 +2,11 @@ package com.nri.babylon.audio;
 
 import com.nri.library.stt.NRISpeechToText;
 import com.nri.library.text_translation.NRITextTranslation;
-import com.nri.library.text_translation.enums.SupportedLanguage;
 import com.nri.library.tts.NRITextToSpeech;
-import org.kurento.tutorial.groupcall.Room;
-import org.kurento.tutorial.groupcall.UserSession;
+import com.nri.babylon.kurento.Room;
+import com.nri.babylon.kurento.UserSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class NriAudioCodec {

@@ -15,7 +15,7 @@
  *
  */
 
-package org.kurento.tutorial.groupcall;
+package com.nri.babylon.kurento;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -42,10 +42,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 
-/**
- * @author Ivan Gracia (izanmail@gmail.com)
- * @since 4.3.1
- */
+
 public class Room implements Closeable {
   private final Logger log = LoggerFactory.getLogger(Room.class);
 
