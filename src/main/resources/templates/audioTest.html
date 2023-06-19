@@ -1,21 +1,16 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Kurento Test</title>
-    <link rel="stylesheet" href="/webjars/bootstrap/5.2.2/dist/css/bootstrap.min.css">
-    <script src="/webjars/jquery/3.6.3/dist/jquery.min.js"></script>
-    <script src="/webjars/bootstrap/5.2.2/dist/js/bootstrap.min.js"></script>
-    <script src="/js/kurento-utils.min.js"></script>
+    <title>Speech-to-Text</title>
 </head>
 <body>
-<div class="container">
-    <h1>Kurento Test</h1>
-    <video autoplay id="localVideo" style="width: 480px; height: 360px;"></video>
-    <video autoplay id="remoteVideo" style="width: 480px; height: 360px;"></video>
-    <button class="btn btn-primary" id="startButton">Start</button>
-</div>
+    <h1>Speech-to-Text</h1>
 
-<script th:src="@{/js/audio.js}"></script>
+    <button id="start_button">Start Recording</button>
+    <button id="stop_button" disabled>Stop Recording</button>
+    <br>
+    <p id="transcript"></p>
+
+    <script src="./js/mic.js"></script>
 </body>
 </html>

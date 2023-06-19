@@ -41,6 +41,7 @@ dependencies {
 	implementation "ws.schild:jave-all-deps:3.3.1"
 
 	implementation 'org.springframework:spring-websocket'
+	implementation 'org.springframework:spring-messaging:5.3.10'
 
 	// WebJars
 	implementation 'org.webjars:webjars-locator:0.45'
@@ -55,7 +56,7 @@ dependencies {
 	implementation 'org.kurento:kurento-client:7.0.0'
 	implementation "org.kurento:kurento-utils-js:7.0.0"
 
-	implementation files('libs/nri_speech_to_text_lib-0.0.9.jar')
+	implementation files('libs/nri_speech_to_text_lib-0.0.10.jar')
 	implementation files('libs/nri_text_to_speech_lib-0.0.1.jar')
 	implementation files('libs/nri_text_translation_lib-0.0.3.jar')
 

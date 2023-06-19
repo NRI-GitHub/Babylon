@@ -81,7 +81,7 @@ public class AudioUtils {
         File source = mp3Path.toFile();
 
 
-        return source.getAbsolutePath();
+        return fileName;
     }
 
     public static void copyFile(String fileName, String newFile) {

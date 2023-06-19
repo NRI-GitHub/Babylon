@@ -11,10 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class NriAudioCodec implements OutgoingAudioCallback{
+public class NriAudioCodec {
     HashMap<String, IncomingAudioCallback> listeners;
-    @Autowired
-    private NRISpeechToText nriSpeechToText;
     @Autowired
     private NRITextToSpeech nriTextToSpeech;
     @Autowired
@@ -29,19 +27,8 @@ public class NriAudioCodec implements OutgoingAudioCallback{
         listeners.put(room +"_"+ user, listener);
     }
 
-    public void createAudioThread(String audioFile, Room room, UserSession user, SupportedLanguage fromLanguage, SupportedLanguage toLanguage){
-        AudioThread audioThread = new AudioThread(this, audioFile, user, room, nriSpeechToText, nriTextToSpeech,
-                nriTextTranslation, fromLanguage, toLanguage);
+    public void createAudioThread(String audioFile, Room room, UserSession user, NRISpeechToText nriSpeechToText){
+        AudioThread audioThread = new AudioThread(audioFile, user, room, nriSpeechToText, nriTextToSpeech, nriTextTranslation);
         audioThread.start();
-    }
-
-    @Override
-    public void onOutgoingAudio(String fileLocation, String roomName, String userName) {
-        System.out.println("finding listener id: " + roomName +"_"+ userName);
-        IncomingAudioCallback callback = listeners.get(roomName +"_"+ userName);
-        if(callback != null){
-            callback.onIncomingAudio(fileLocation, roomName, userName);
-            listeners.remove(roomName +"_"+ userName);
-        }
     }
 }

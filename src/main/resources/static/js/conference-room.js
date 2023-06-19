@@ -251,3 +251,49 @@ function sendMessage(message) {
 	console.log('Sending message: ' + jsonMessage);
 	ws.send(jsonMessage);
 }
+
+function toggleCamera() {
+  var button = document.getElementById("cameraButton");
+  var cameraIcon = button.querySelector("ion-icon");
+
+  if (button.classList.contains("rounded-camera-button-on")) {
+    button.classList.remove("rounded-camera-button-on");
+    button.classList.add("rounded-camera-button-off");
+    cameraIcon.setAttribute("name", "videocam-off");
+    button.setAttribute("title", "Turn Camera On");
+  } else if (button.classList.contains("rounded-camera-button-off")) {
+    button.classList.remove("rounded-camera-button-off");
+    button.classList.add("rounded-camera-button-on");
+    cameraIcon.setAttribute("name", "videocam");
+    button.setAttribute("title", "Turn Camera Off");
+  }
+}
+
+function toggleMic() {
+  var button = document.getElementById("micButton");
+  var micIcon = button.querySelector("ion-icon");
+  var muteMe = participants[name];
+
+  if (button.classList.contains("rounded-mic-button-on")) {
+    button.classList.remove("rounded-mic-button-on");
+    button.classList.add("rounded-mic-button-off");
+    micIcon.setAttribute("name", "mic-off");
+    button.setAttribute("title", "Turn Microphone On");
+
+    // Call the function here to toggle audio off
+    muteMe.rtcPeer.audioEnabled = false;
+
+  } else if (button.classList.contains("rounded-mic-button-off")) {
+    button.classList.remove("rounded-mic-button-off");
+    button.classList.add("rounded-mic-button-on");
+    micIcon.setAttribute("name", "mic");
+    button.setAttribute("title", "Turn Microphone Off");
+
+    // Call the function here to toggle audio on
+    muteMe.rtcPeer.audioEnabled = true;
+  }
+}
+
+function endCall() {
+  alert("Call Ended!");
+}

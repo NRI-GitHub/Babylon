@@ -1,5 +1,6 @@
 package com.nri.babylon.config;
 
+import com.nri.babylon.controller.ProxyWebSocketHandler;
 import org.kurento.client.KurentoClient;
 import org.kurento.tutorial.groupcall.CallHandler;
 import org.kurento.tutorial.groupcall.RoomManager;
@@ -85,7 +86,7 @@ public class GlobalConfig {
 
     @Bean
     public Util getUtil(NRITextTranslation nriTextTranslation, NRITextToSpeech nriTextToSpeech) {
-        Util util = new Util(recorderEndpointIpAddress, colorGenerator, nriTextTranslation, nriTextToSpeech);
+        Util util = new Util(recorderEndpointIpAddress, colorGenerator, nriTextTranslation, nriTextToSpeech, speechToTextKey);
         Util.setInstance(util);
         return util;
     }

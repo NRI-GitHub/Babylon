@@ -70,7 +70,7 @@ public class Room implements Closeable {
     this.close();
   }
 
-  public UserSession join(String userName, WebSocketSession session, Voice userVoice, SupportedLanguage userLanguage) throws IOException {
+  public UserSession join(String userName, WebSocketSession session, Voice userVoice, SupportedLanguage userLanguage) throws Exception {
     log.info("ROOM {}: adding participant {}", this.name, userName);
     final UserSession participant = new UserSession(userName, this, session, this.pipeline, userVoice, userLanguage, nriAudioCodec);
     joinRoom(participant);

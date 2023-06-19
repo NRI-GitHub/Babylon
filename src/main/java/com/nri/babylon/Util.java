@@ -13,12 +13,14 @@ import java.util.List;
 public class Util {
     private static Util instance;
     private final String recorderEndpointIpAddress;
+    private final String nriSpeechToTextAPI;
     private final ColorGenerator colorGenerator;
     private final NRITextTranslation nriTextTranslation;
     private final NRITextToSpeech nriTextToSpeech;
 
-    public Util(String recorderEndpointIpAddress, ColorGenerator colorGenerator, NRITextTranslation nriTextTranslation, NRITextToSpeech nriTextToSpeech) {
+    public Util(String recorderEndpointIpAddress, ColorGenerator colorGenerator, NRITextTranslation nriTextTranslation, NRITextToSpeech nriTextToSpeech, String nriSpeechToTextAPI) {
         this.recorderEndpointIpAddress = recorderEndpointIpAddress;
+        this.nriSpeechToTextAPI = nriSpeechToTextAPI;
         this.colorGenerator = colorGenerator;
         this.nriTextTranslation = nriTextTranslation;
         this.nriTextToSpeech = nriTextToSpeech;
@@ -31,6 +33,9 @@ public class Util {
 
     public static String recorderEndpointIpAddress() {
         return instance.getRecorderEndpointIpAddress();
+    }
+    public static String speechToTextAPI() {
+        return instance.getNriSpeechToTextAPI();
     }
 
     public static String getUniqueHexColor(String name) {
@@ -67,6 +72,9 @@ public class Util {
 
     private String getRecorderEndpointIpAddress() {
         return recorderEndpointIpAddress;
+    }
+    private String getNriSpeechToTextAPI() {
+        return nriSpeechToTextAPI;
     }
 
     public ColorGenerator getColorGenerator() {

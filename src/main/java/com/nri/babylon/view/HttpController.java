@@ -48,6 +48,12 @@ public class HttpController {
         return "register-page";
     }
 
+    @GetMapping("/audioTest")
+    public String audioTest() {
+
+        return "audioTest";
+    }
+
     @PostMapping("/register")
     public String registerSubmit(Model model, @ModelAttribute Register register,
                                  RedirectAttributes redirectAttributes) {

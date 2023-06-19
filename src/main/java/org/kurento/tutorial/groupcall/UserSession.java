@@ -41,12 +41,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import com.google.gson.JsonObject;
-
-/**
- * @author Ivan Gracia (izanmail@gmail.com)
- * @since 4.3.1
- */
-public class UserSession implements Closeable {
+public class UserSession implements Closeable, OutgoingAudioCallback {
 
     private static final Logger log = LoggerFactory.getLogger(UserSession.class);
 
@@ -65,9 +60,11 @@ public class UserSession implements Closeable {
     private final String saveAudioName;
     private final String saveAudioPath;
     private final NriAudioCodec nriAudioCodec;
+    private final NRISpeechToText nriSpeechToText;
+    private final OutgoingAudioCallback audioCallback;
     private Map<String, PlayerEndpoint> userPlayerEndpoints = new HashMap<>();
     public UserSession(final String name, Room realRoom, final WebSocketSession session,
-                       MediaPipeline pipeline, Voice voice, SupportedLanguage nativeLanguage, NriAudioCodec nriAudioCodec) {
+                       MediaPipeline pipeline, Voice voice, SupportedLanguage nativeLanguage, NriAudioCodec nriAudioCodec) throws Exception {
 
         this.pipeline = pipeline;
         this.name = name;
@@ -80,6 +77,8 @@ public class UserSession implements Closeable {
         this.voice = voice;
         this.saveAudioPath = "audio2/" + session.getId();
         this.saveAudioName = "rec-" + name + ".webm";
+        this.audioCallback = this;
+        this.nriSpeechToText = new NRISpeechToText(Util.speechToTextAPI());
 
 
         try {
@@ -88,29 +87,21 @@ public class UserSession implements Closeable {
             e.printStackTrace();
         }
 
-        startRecording(0);
-        this.outgoingMedia.addIceCandidateFoundListener(new EventListener<IceCandidateFoundEvent>() {
-
-            @Override
-            public void onEvent(IceCandidateFoundEvent event) {
-                JsonObject response = new JsonObject();
-                response.addProperty("id", "iceCandidate");
-                response.addProperty("name", name);
-                response.add("candidate", JsonUtils.toJsonObject(event.getCandidate()));
-                try {
-                    synchronized (session) {
-                        session.sendMessage(new TextMessage(response.toString()));
-                    }
-                } catch (IOException e) {
-                    log.debug(e.getMessage());
+        this.outgoingMedia.addIceCandidateFoundListener(event -> {
+            JsonObject response = new JsonObject();
+            response.addProperty("id", "iceCandidate");
+            response.addProperty("name", name);
+            response.add("candidate", JsonUtils.toJsonObject(event.getCandidate()));
+            try {
+                synchronized (session) {
+                    session.sendMessage(new TextMessage(response.toString()));
                 }
+            } catch (IOException e) {
+                log.debug(e.getMessage());
             }
         });
-    }
-    public void onAudioSavedSuccessfully(File audioFile, Room room, UserSession userSession) {
-        SupportedLanguage nativeLanguage = userSession.getNativeLanguage();
-        SupportedLanguage translateInto = AudioUtils.getOtherPartyNativeLanguage(room, userSession);
-        nriAudioCodec.createAudioThread(audioFile.getAbsolutePath(), room, userSession, nativeLanguage, translateInto);
+
+        startRecording(0);
     }
     public void startRecording(int count) {
         System.out.println(this.name + " has started recording");
@@ -126,10 +117,11 @@ public class UserSession implements Closeable {
         (new Thread(() -> {
             try {
                 System.out.println("I'm Sleeping shhhh");
-                Thread.sleep(2000);
+                Thread.sleep(3000);
                 recordMyAudio.stop();
                 startRecording(count + 1);
-                onAudioSavedSuccessfully(new File(fileNamePath), realRoom, this);
+                System.out.println("Raw input file is at: " + fileNamePath);
+                nriAudioCodec.createAudioThread(fileNamePath, realRoom, this, nriSpeechToText);
                 System.out.println("I'm Sleeping done");
             } catch (Exception e) {
                 e.printStackTrace();
@@ -178,7 +170,11 @@ public class UserSession implements Closeable {
 
     private WebRtcEndpoint getEndpointForUser(final UserSession sender) {
         if (sender.getName().equals(name)) {
-            log.debug("PARTICIPANT {}: configuring loopback", this.name);
+            System.out.println("PARTICIPANT {}: configuring video loopback" + this.name);
+
+            // Connect only the video for loopback
+            sender.getOutgoingWebRtcPeer().connect(outgoingMedia, MediaType.VIDEO);
+
             return outgoingMedia;
         }
 
@@ -189,21 +185,17 @@ public class UserSession implements Closeable {
             log.debug("PARTICIPANT {}: creating new endpoint for {}", this.name, sender.getName());
             incoming = new WebRtcEndpoint.Builder(pipeline).build();
 
-            incoming.addIceCandidateFoundListener(new EventListener<IceCandidateFoundEvent>() {
-
-                @Override
-                public void onEvent(IceCandidateFoundEvent event) {
-                    JsonObject response = new JsonObject();
-                    response.addProperty("id", "iceCandidate");
-                    response.addProperty("name", sender.getName());
-                    response.add("candidate", JsonUtils.toJsonObject(event.getCandidate()));
-                    try {
-                        synchronized (session) {
-                            session.sendMessage(new TextMessage(response.toString()));
-                        }
-                    } catch (IOException e) {
-                        log.debug(e.getMessage());
+            incoming.addIceCandidateFoundListener(event -> {
+                JsonObject response = new JsonObject();
+                response.addProperty("id", "iceCandidate");
+                response.addProperty("name", sender.getName());
+                response.add("candidate", JsonUtils.toJsonObject(event.getCandidate()));
+                try {
+                    synchronized (session) {
+                        session.sendMessage(new TextMessage(response.toString()));
                     }
+                } catch (IOException e) {
+                    log.debug(e.getMessage());
                 }
             });
 
@@ -255,6 +247,7 @@ public class UserSession implements Closeable {
                 public void onSuccess(Void result) throws Exception {
                     log.trace("PARTICIPANT {}: Released successfully incoming EP for {}",
                             UserSession.this.name, remoteParticipantName);
+                    //TODO cleanup file system
                 }
 
                 @Override
@@ -342,29 +335,16 @@ public class UserSession implements Closeable {
         return iconColor;
     }
 
-    public void playNewAudio(File file, UserSession sender) {
-        if (sender.getName().equals(name)) {
-            log.debug("PARTICIPANT {}: configuring loopback", this.name);
-            return;
-        }
+    @Override
+    public void onOutgoingAudio(String fileName, UserSession sender) {
+        System.out.println("Translated file is at: " + "audio2/" + fileName + ".mp3");
+        PlayerEndpoint playerEndpoint = new PlayerEndpoint.Builder(pipeline, "file:///audio2/" + fileName + ".mp3").build();
+        WebRtcEndpoint incoming = incomingMedia.get(sender.getName());
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-
-                String absolutePath = file.getAbsolutePath();
-                log.info("path: " + absolutePath);
-
-                String name = file.getName();
-                log.info("path: name : " + name);
-                //playerEndpoint.stop();
-                PlayerEndpoint playerEndpoint2 = new PlayerEndpoint.Builder(pipeline, "file:///" +"audio2/"+name).build();//file must be stored on the kurento server
-                WebRtcEndpoint incoming = incomingMedia.get(sender.getName());
-
-                playerEndpoint2.connect(incoming, MediaType.AUDIO);
-                playerEndpoint2.play();
-            }
-        }).start();
+        playerEndpoint.connect(incoming, MediaType.AUDIO);
+        playerEndpoint.play();
     }
-
+    public OutgoingAudioCallback getAudioCallback() {
+        return audioCallback;
+    }
 }

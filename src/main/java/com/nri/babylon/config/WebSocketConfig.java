@@ -1,7 +1,6 @@
 package com.nri.babylon.config;
 
-
-import com.nri.babylon.controller.WebSocketHandler;
+import com.nri.babylon.controller.ProxyWebSocketHandler;
 import org.kurento.tutorial.groupcall.CallHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -17,11 +16,11 @@ public class WebSocketConfig implements WebSocketConfigurer {
     private CallHandler callHandler;
 
     @Autowired
-    private WebSocketHandler webSocketHandler;
+    private ProxyWebSocketHandler proxyWebSocketHandler;
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(callHandler, "/groupcall");
-        registry.addHandler(webSocketHandler, "/websocket");
+        registry.addHandler(proxyWebSocketHandler, "/proxy");
     }
 }
