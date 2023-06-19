@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="styleSheet" href="style.css" type="text/css" media="screen">
+    <title>Babylon Login</title>
+</head>
+<body>
+    <div id="container">
+    <div id="wrapper">
+        <div id="join" class="animate join">
+            <h1>Babylon - Live Translation</h1>
+            <h2>Join a meeing</h2>
+            <form id="registerForm" action="#" th:action="@{/register}" method="post">
+                <p>
+                    <input type="text" name="name" value="" id="name" placeholder="Username" required>
+                </p>
+                <p>
+                    <input type="text" name="room" value="" id="roomName" placeholder="Room" required>
+                </p>
+                <p>
+                <div class="input-group">
+                    <label for="voice">Select a voice</label>
+                    <select id="voice" name="voice"> <!-- Add the name attribute here -->
+                        <option th:each="voice : ${voices}" th:value="${voice.id}" th:text="${voice.name}"></option>
+                    </select>
+                </div>
+                </p>
+
+                <p>
+                <div class="input-group">
+                    <label for="languageId">Select a language</label>
+                    <select id="languageId" name="languageId"> <!-- And add the name attribute here too -->
+                        <option th:each="language : ${languages}" th:value="${language.id}" th:text="${language.planText}"></option>
+                    </select>
+                </div>
+                </p>
+
+                <p class="submit">
+                    <input type="submit" name="commit" value="Join!">
+                </p>
+
+                <p th:if="${errorMessage}" th:text="${errorMessage}" class="error"></p>
+            </form>
+
+        </div>
+        <div id="room" style="display: none;">
+            <h2 id="room-header"></h2>
+            <div id="participants"></div>
+            <input type="button" id="button-leave" onmouseup="leaveRoom();"
+                   value="Leave room">
+        </div>
+    </div>
+</div>
+
+    <script src="/js/register-home.js"></script>
+</body>
+</html>

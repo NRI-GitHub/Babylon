@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+/libs/
+/audio/
+/src/main/resources/application.properties
